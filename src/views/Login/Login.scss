@@ -1,0 +1,129 @@
+#login {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 100vh;
+
+    .card {
+        position: absolute;
+        background-color: #001d26;
+        width: 300px;
+        padding: 0 !important;
+        top: 50%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+
+        .md-card-header + .md-card-content {
+            padding-top: 0 !important;
+        }
+
+        &.login-card {
+            .card-header {
+                .card-title {
+                    font-size: 32pt;
+                    text-align: center;
+                    padding: 1em 0;
+                    color: #ed4d1d;
+                    font-family: "Roboto Slab Bold", serif;
+                }
+            }
+
+            .card-content {
+                a {
+                    margin-bottom: 20px !important;
+                }
+            }
+
+            .card-actions {
+                display: flex;
+                flex-direction: column;
+
+                .login-btn {
+                    width: 100%;
+                }
+
+                .social-btn {
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                .create-account {
+                    margin: 20px 0 4px 0;
+                    text-align: center;
+                }
+            }
+        }
+
+        &.sign-up-card {
+            .card-header {
+                margin-bottom: 30px;
+                padding: 0;
+
+                .card-title {
+                    font-size: 32pt;
+                    text-align: center;
+                    padding: 1em 0;
+                    color: #ed4d1d;
+                    font-family: "Roboto Slab Bold", serif;
+                }
+            }
+
+            .card-content {
+                a {
+                    margin-bottom: 20px !important;
+                }
+            }
+
+            .card-actions {
+                display: flex;
+                flex-direction: column;
+
+                .login-btn {
+                    width: 100%;
+                }
+
+                .social-btn {
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                .create-account {
+                    margin: 20px 0 4px 0;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .footer {
+        bottom: 0;
+        display: flex;
+        left: 0;
+        position: absolute;
+        right: 0;
+
+        .bar {
+            height: 20px;
+            width: calc(100% / 6);
+
+            &.bar-rich-black {
+                background-color: #001d26;
+            }
+            &.bar-flame {
+                background-color: #ed4d1d;
+            }
+            &.bar-blue-green {
+                background-color: #0297c4;
+            }
+            &.bar-sky-blue {
+                background-color: #65c4e0;
+            }
+            &.bar-azure-x {
+                background-color: #def1f7;
+            }
+            &.bar-android-green {
+                background-color: #a0ca16;
+            }
+        }
+    }
+}

@@ -1,14 +1,20 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Main from '../views/Home/Home.vue';
-import Login from '../views/Home/Children/Login/Login.vue';
+import Main from '../views/Main/Main.vue';
+import Login from '../views/Login/Login.vue';
+import Home from '../views/Main/Children/Home/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
   {
     path: "*",
-    redirect: "Home",
+    redirect: "Login",
+  },
+  {
+    path: "/Login",
+    name: "Login",
+    component: Login,
   },
   {
     path: '/Main',
@@ -17,28 +23,13 @@ const routes: RouteConfig[] = [
       {
         path: "/Home",
         name: "Home",
-        component: Login,
-      }
-      {
-        path: "/Profile",
-        name: "Profile",
-        component: Login,
-      }
-      {
-        path: "/Sign-Up",
-        name: "Sign-Up",
-        component: Login,
-      }
+        component: Home,
+      },
       {
         path: "/Settings",
         name: "Settings",
         component: Login,
       },
-      {
-        path: "/Login",
-        name: "Login",
-        component: Login,
-      }
     ],
     component: Main,
   },
