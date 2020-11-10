@@ -1,0 +1,49 @@
+#site-nav {
+	display: flex;
+	flex-direction: row;
+
+	.logo-container {
+		background-color: #65c4e0;
+		text-align: center;
+		width: 150px;
+
+		.logo {
+			height: 72px;
+		}
+	}
+
+	.funda-container {
+		background-color: #001d26;
+		color: #65c4e0;
+		display: grid;
+		font-family: "Roboto Slab Bold", serif;
+		font-size: 24pt;
+		height: 72px;
+		place-items: center;
+		text-transform: uppercase;
+		padding: 0 40px;
+	}
+
+	.tab-container {
+		width: 100%;
+		position: relative;
+
+		.md-tabs-navigation {
+			background-color: #001d26;
+
+			.md-tab-nav-button {
+				width: 150px;
+			}
+		}
+	}
+
+	.action-container {
+		align-items: center;
+		background-color: #001d26;
+		display: flex;
+		font-size: 11pt;
+		justify-content: space-evenly;
+		text-transform: uppercase;
+		width: 200px;
+	}
+}

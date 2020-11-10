@@ -1,0 +1,38 @@
+#home {
+
+    .footer {
+        bottom: 0;
+        display: flex;
+        left: 0;
+        position: absolute;
+        right: 0;
+
+        .bar {
+            height: 20px;
+            width: calc(100% / 6);
+
+            &.bar-rich-black {
+                background-color: #001d26;
+            }
+            &.bar-flame {
+                background-color: #ed4d1d;
+            }
+            &.bar-blue-green {
+                background-color: #0297c4;
+            }
+            &.bar-sky-blue {
+                background-color: #65c4e0;
+            }
+            &.bar-azure-x {
+                background-color: #def1f7;
+            }
+            &.bar-android-green {
+                background-color: #a0ca16;
+            }
+        }
+    }
+
+    .router-view {
+        height: 100%;
+    }
+}
