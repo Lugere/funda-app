@@ -2,6 +2,7 @@ import { Component, Vue } from "vue-property-decorator";
 import SiteNav from "@/components/SiteNav.vue";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
+import getterMixin from '@/mixins/getterMixin';
 
 @Component({
     components: {
@@ -11,7 +12,7 @@ import store from "@/store";
         ...mapState(["entries"]),
     },
 })
-export default class Main extends Vue {
+export default class Main extends getterMixin {
     /* Data */
 
     public entries!: any;
@@ -65,6 +66,6 @@ export default class Main extends Vue {
     public mounted() {
         store.dispatch("fetchEntries");
         this.setTimestamp();
-        document.title = "FUNDA - Fragen & Antworten | Home";
+        document.title = `FUNDA - Fragen & Antworten | ${this.getRouteString()}`;
     }
 }

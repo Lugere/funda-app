@@ -7,11 +7,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import moment from "moment";
+import getterMixin from './mixins/getterMixin';
 
 @Component
-export default class App extends Vue {
+export default class App extends getterMixin {
     mounted() {
-        moment().locale("de");
+        moment.locale("de");
     }
 }
 </script>

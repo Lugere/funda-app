@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
+import router from "../router";
 import axios from "axios";
+import Login from "@/views/Login/Login";
 
 Vue.use(Vuex);
 
@@ -118,11 +120,56 @@ const store = new Vuex.Store({
                 entryId: 1,
             },
         ],
+        quizzes: [
+            {
+                quizId: 1,
+                userId: 3,
+                title: "BIOS Quiz",
+                description:
+                    "Alles rund um das Thema BIOS und UEFI. Perfekte Vorbereitung für die Arbeit in LF0 am 31.02.2021",
+                createdAt: 1605532272,
+            },
+            {
+                quizId: 2,
+                userId: 2,
+                title: "CPU und GPU",
+                description: "Kleine Zusammenfassung zu unserem letzten Thema",
+                createdAt: 1605532272,
+            },
+        ],
+        quiz_entries: [
+            {
+                quizEntryId: 1,
+                quizId: 1,
+                entryId: 2,
+            },
+            {
+                quizEntryId: 2,
+                quizId: 1,
+                entryId: 1,
+            },
+            // {
+            //     quizEntry_id: 2,
+            //     quizId: 2,
+            //     entryId: 1,
+            // },
+            // {
+            //     quizEntry_id: 3,
+            //     quizId: 2,
+            //     entryId: 4,
+            // },
+            // {
+            //     quizEntry_id: 4,
+            //     quizId: 2,
+            //     entryId: 3,
+            // },
+        ],
         subject: 0,
     },
     mutations: {
-        setEntries(state, val) {
-            state.entries = val;
+        setState(state, val) {
+            state = val;
+            state.subject = 0;
         },
         pushEntry(state, val) {
             if (val) state.entries.push(Object.assign({}, val));
@@ -139,20 +186,18 @@ const store = new Vuex.Store({
     },
     actions: {
         async logout() {
-            console.log("Logout");
+            router.push("Login");
+        },
+
+        async login() {
+            router.push("/");
         },
 
         async fetchEntries({ commit }) {
-            // await Vue.axios
-            //     .post("@/scripts/fetchEntries", {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-            //             "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-            //         },
-            //     })
-            //     .then(async response => commit("setEntries", response.data))
-            //     .catch(e => console.error(`Error fetching entries: ${e}`));
+            await Vue.axios
+                .post("http://localhost/funda/fetchDB.php", { table: "entries" })
+                .then(async response => commit("setState", response.data))
+                .catch(e => console.error(`Error fetching tables: ${e}`));
         },
 
         async createEntry({ dispatch, commit }, entry) {

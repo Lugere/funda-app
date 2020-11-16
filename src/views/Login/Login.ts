@@ -1,4 +1,5 @@
 import { Vue, Component } from "vue-property-decorator";
+import store from '@/store';
 
 @Component
 export default class Login extends Vue {
@@ -7,14 +8,8 @@ export default class Login extends Vue {
         password: "",
     };
     rememberMe = false;
-    remainLoggedIn = false;
-    showLogin = false;
 
-    public toggleLogin(): void {
-        this.showLogin = !this.showLogin;
-    }
-
-    get currentPasth(): string {
-        return window.location.pathname;
+    login() {
+        store.dispatch("login")
     }
 }

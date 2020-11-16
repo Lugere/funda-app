@@ -13,16 +13,16 @@
                 <img src="@/assets/img/logo.png" />
             </div>
             <ul class="list">
-                <div
-                    class="item"
+                <!-- <div
+                    class="item md-body-2"
                     :class="{ active: checkRoute('/Home') }"
                     @click="changeRoute('/Home')"
                 >
                     <md-icon class="icon">home</md-icon>
                     <span class="name">Home</span>
-                </div>
+                </div> -->
                 <div
-                    class="item"
+                    class="item md-body-2"
                     :class="{ active: checkRoute('/Entries') }"
                     @click="changeRoute('/Entries')"
                 >
@@ -30,7 +30,7 @@
                     <span class="name">Fragen</span>
                 </div>
                 <div
-                    class="item"
+                    class="item md-body-2"
                     :class="{ active: checkRoute('/Subjects') }"
                     @click="changeRoute('/Subjects')"
                 >
@@ -38,22 +38,22 @@
                     <span class="name">Kategorien</span>
                 </div>
                 <div
-                    class="item"
+                    class="item md-body-2"
                     :class="{ active: checkRoute('/Quizzes') }"
                     @click="changeRoute('/Quizzes')"
                 >
                     <md-icon class="icon">question_answer</md-icon>
-                    <span class="name">Quizzes</span>
+                    <span class="name">Lernquiz</span>
                 </div>
-                <div
-                    class="item"
+                <!-- <div
+                    class="item md-body-2"
                     :class="{ active: checkRoute('/Statistics') }"
                     @click="changeRoute('/Statistics')"
                 >
                     <md-icon class="icon">analytics</md-icon>
                     <span class="name">Auswertung</span>
-                </div>
-                <div class="item last" @click="$router.replace('Login')">
+                </div> -->
+                <div class="item md-body-2 last" @click="logout()">
                     <md-icon class="icon">exit_to_app</md-icon>
                     <span class="name">Abmelden</span>
                 </div>
@@ -63,11 +63,12 @@
             <div class="function">
                 <div class="col col-1">
                     <span class="funda">Funda</span>
-                    <div class="breadcrumbs">
+                    <!-- <div class="breadcrumbs">
                         <span class="crumb">Home</span> /
                         <span class="crumb">Computerkomponenten</span> /
                         <span class="current-crumb crumb">Wie ist ein CPU aufgebaut?</span>
-                    </div>
+                    </div> -->
+                    <span class="md-body-2 funda-sub">Fragen und Antworten | {{ getRouteString() }}</span>
                 </div>
                 <div class="col col-2">
                     <div class="timestamp">

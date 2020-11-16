@@ -20,7 +20,7 @@
                 <md-checkbox v-model="remainLoggedIn">Angemeldet bleiben</md-checkbox>
             </md-card-content>
             <md-card-actions class="card-actions">
-                <md-button class="md-primary md-raised login-btn" to="Home">
+                <md-button class="md-primary md-raised login-btn" @click="login()">
                     Anmelden
                 </md-button>
             </md-card-actions>

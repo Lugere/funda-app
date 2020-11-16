@@ -18,35 +18,60 @@ const routes: RouteConfig[] = [
         path: "/Login",
         name: "Login",
         component: Login,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: "/",
         name: "Main",
-        redirect: "Home",
+        redirect: "Entries",
+        meta: {
+            requiresAuth: true,
+        },
         children: [
-            {
-                path: "/Home",
-                name: "Home",
-                component: Home,
-            },
+            // {
+            //     path: "/Home",
+            //     name: "Home",
+            //     component: Home,
+            //     meta: {
+            //         requiresAuth: true,
+            //     },
+            // },
             {
                 path: "/Entries",
                 name: "Entries",
                 component: Entries,
+                meta: {
+                    requiresAuth: true,
+                    breadcrumb: "Fragen",
+                },
             },
             {
                 path: "/Subjects",
                 name: "Subjects",
                 component: Subjects,
+                meta: {
+                    requiresAuth: true,
+                    breadcrumb: "Kategorien",
+                },
             },
             {
                 path: "/Quizzes",
                 name: "Quizzes",
                 component: Quizzes,
+                meta: {
+                    requiresAuth: true,
+                    breadcrumb: "Lernquiz",
+                },
             },
             {
                 path: "/Statistics",
                 name: "Statistics",
+                meta: {
+                    requiresAuth: true,
+                    breadcrumb: "Auswertung",
+                },
                 // component: Statistics,
             },
         ],
@@ -57,6 +82,11 @@ const routes: RouteConfig[] = [
 const router = new VueRouter({
     mode: "history",
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = `FUNDA - Fragen & Antworten | ${to.meta.breadcrumb}`;
+    next();
 });
 
 export default router;

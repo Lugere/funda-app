@@ -7,5 +7,8 @@ module.exports = {
       filename: "index.html",
       title: "FUNDA - Fragen und Antworten",
     }
+  },
+  devServer: {
+      proxy: "http://localhost/"
   }
 }
