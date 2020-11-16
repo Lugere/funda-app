@@ -1,3 +1,5 @@
+@import "utilities/_variables.scss";
+
 #login {
     display: flex;
     align-items: center;
@@ -6,7 +8,7 @@
 
     .card {
         position: absolute;
-        background-color: #001d26;
+        background-color: $darkblue;
         width: 300px;
         padding: 0 !important;
         top: 50%;
@@ -25,12 +27,6 @@
                     padding: 1em 0;
                     color: #ed4d1d;
                     font-family: "Roboto Slab Bold", serif;
-                }
-            }
-
-            .card-content {
-                a {
-                    margin-bottom: 20px !important;
                 }
             }
 
@@ -125,5 +121,20 @@
                 background-color: #a0ca16;
             }
         }
+    }
+
+    .funda {
+        position: absolute;
+        left: 60%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-transform: uppercase;
+        font-size: 100pt;
+        color: $white;
+        // -webkit-text-fill-color: $orange; /* Will override color (regardless of order) */
+        // -webkit-text-stroke-width: 8px;
+        // -webkit-text-stroke-color: $darkblue;
+        font-family: "Roboto Slab Black";
+        user-select: none;
     }
 }

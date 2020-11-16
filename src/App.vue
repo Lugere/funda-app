@@ -6,9 +6,14 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import moment from "moment";
 
 @Component
-export default class App extends Vue {}
+export default class App extends Vue {
+    mounted() {
+        moment().locale("de");
+    }
+}
 </script>
 
 <style lang="scss">
@@ -19,7 +24,6 @@ export default class App extends Vue {}
     (
         primary: #a0ca16,
         accent: #ed4d1d,
-        theme: dark,
     )
 );
 
@@ -33,14 +37,28 @@ export default class App extends Vue {}
     box-sizing: border-box;
 }
 
-a {
+a,
+a:link,
+a:hover,
+a:active,
+a:visited {
     cursor: pointer;
+    text-decoration: none !important;
 }
 
 #app {
-    background-image: url("assets/img/bg.png");
+    background-image: url("assets/img/bg2.png");
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     height: 100vh;
     width: 100vw;
+    font-family: "Roboto";
+
+    .md-dialog .md-dialog-container {
+        min-width: 768px !important;
+    }
 }
 /*
  * Robot

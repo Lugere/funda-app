@@ -1,5 +1,199 @@
-#home {
-    .router-view {
-        height: 100vh;
+@import "utilities/_variables";
+
+#main {
+    display: grid;
+    grid-template-columns: [footer] 7.5px [navbar] 225px [main] auto;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+
+    .footer {
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        grid-column-start: footer;
+        left: 0;
+        position: absolute;
+        top: 0;
+
+        .bar {
+            width: 7.5px;
+            height: calc(100% / 6);
+
+            &.bar-rich-black {
+                background-color: #001d26;
+            }
+            &.bar-flame {
+                background-color: #ed4d1d;
+            }
+            &.bar-blue-green {
+                background-color: #0297c4;
+            }
+            &.bar-sky-blue {
+                background-color: #65c4e0;
+            }
+            &.bar-azure-x {
+                background-color: #def1f7;
+            }
+            &.bar-android-green {
+                background-color: #a0ca16;
+            }
+        }
+    }
+
+    .navigation {
+        grid-column-start: navbar;
+        background-color: $lightblue;
+        display: grid;
+        grid-template-rows: 150px 1fr;
+        position: relative;
+
+        .logo {
+            display: grid;
+            height: 150px;
+            place-items: center;
+            width: 100%;
+
+            img {
+                width: 100px;
+            }
+        }
+
+        .list {
+            list-style: none;
+
+            .item {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                padding: 1.5em 0;
+                user-select: none;
+                width: 100%;
+                transition: color 400ms ease;
+
+                a:not(.active) {
+                    color: $white;
+                }
+
+                .icon {
+                    font-size: 24pt !important;
+                    margin: 0 0.75em;
+                }
+
+                .name {
+                    font-size: 12pt;
+                }
+
+                &.active {
+                    color: $darkblue !important;
+                    position: relative;
+
+                    .icon {
+                        color: $darkblue;
+                    }
+
+                    ::after {
+                        background-color: $darkblue;
+                        bottom: 0;
+                        content: "";
+                        right: 0;
+                        position: absolute;
+                        top: 0;
+                        width: 5px;
+                    }
+                }
+
+                &.last {
+                    position: absolute;
+                    bottom: 0;
+                    background-color: $orange;
+                    color: $darkblue;
+                    padding: 1em 0;
+                    text-transform: uppercase;
+                    font-weight: 500;
+
+                    .icon {
+                        color: $darkblue;
+                    }
+
+                    &:hover {
+                        background-color: $orange_hover;
+                    }
+
+                    &:active {
+                        background-color: $orange_active;
+                    }
+                }
+
+                &:hover:not(.last) {
+                    background-color: $lightblue_hover;
+                }
+
+                &:active:not(.last) {
+                    background-color: $lightblue_active;
+                }
+            }
+        }
+    }
+
+    .main-view {
+        grid-column-start: main;
+        display: grid;
+        grid-template-rows: 60px 1fr;
+
+        .function {
+            align-items: center;
+            background-color: $darkblue;
+            display: flex;
+            height: 60px;
+            justify-content: space-between;
+            padding: 0 4em;
+
+            .col {
+                align-items: center;
+                display: flex;
+
+                &.col-1 {
+                    color: $white !important;
+
+                    .funda {
+                        color: $lightblue;
+                        font-family: "Roboto Slab Bold";
+                        font-size: 16pt;
+                        text-transform: uppercase;
+                        user-select: none;
+                    }
+
+                    .breadcrumbs {
+                        margin-left: 4em;
+                        user-select: none;
+                        .crumb {
+                            cursor: pointer;
+                            // font-style: italic;
+                        }
+
+                        .current-crumb {
+                            color: $green;
+                        }
+                    }
+                }
+
+                &.col-2 {
+                    height: 100px;
+                    color: $white;
+
+                    .date {
+                        padding: 0.5em 1em 0.5em 0;
+                        margin-right: 1em;
+                        border-right: 1px solid $grey;
+                    }
+
+                    .welcome {
+                        color: $green;
+                        margin-left: 4em;
+                    }
+                }
+            }
+        }
     }
 }

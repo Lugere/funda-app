@@ -26,6 +26,8 @@
             </md-card-actions>
         </md-card>
 
+        <span class="funda">funda</span>
+
 		<div class="footer md-elevation-3">
 			<div class="bar bar-rich-black" />
 			<div class="bar bar-flame" />
