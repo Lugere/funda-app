@@ -12,17 +12,18 @@ export default class getterMixin extends Vue {
     public entries!: any;
     public subjects!: any;
 
-    public getSubject(subjectId) {
-        return `${this.subjects.find(x => x.subjectId == subjectId).title}`;
+    public getSubject(subject_id) {
+        // return `${this.subjects.find(x => x.subject_id == subject_id).title}`;
+        return "asf";
     }
 
-    public getUser(userId: number) {
-        return `${this.users.find(x => x.userId == userId).firstName} 
-                ${this.users.find(x => x.userId == userId).lastName}`;
+    public getUser(user_id: number) {
+        return `${this.users.find(x => x.user_id == user_id).first_name} 
+                ${this.users.find(x => x.user_id == user_id).last_name}`;
     }
 
-    public getUserRole(userId) {
-        let role = this.users.find(x => x.userId == userId).role;
+    public getUserRole(user_id) {
+        let role = this.users.find(x => x.user_id == user_id).role;
         switch (role) {
             case "admin":
                 return "Administrator";
@@ -33,8 +34,8 @@ export default class getterMixin extends Vue {
         }
     }
 
-    public getUserRoleLetter(userId) {
-        let role = this.users.find(x => x.userId == userId).role;
+    public getUserRoleLetter(user_id) {
+        let role = this.users.find(x => x.user_id == user_id).role;
         switch (role) {
             case "admin":
                 return "A";

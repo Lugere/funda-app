@@ -7,7 +7,7 @@
             md-card
             md-fixed-header
             md-height="737px"
-            md-sort="createdAt"
+            md-sort="created_at"
             v-model="searched"
         >
             <md-table-toolbar class="toolbar">
@@ -21,7 +21,7 @@
                         >
                             <md-option :value="0">Alle Kategorien</md-option>
                             <md-option
-                                :value="option.subjectId"
+                                :value="option.subject_id"
                                 v-for="(option, index) in subjects"
                                 :key="index"
                             >
@@ -62,7 +62,7 @@
             <!-- Entry Rows -->
             <md-table-row
                 class="row"
-                @click="onShowEntry(item.entryId)"
+                @click="onShowEntry(item.entry_id)"
                 slot="md-table-row"
                 slot-scope="{ item }"
                 md-selectable="multiple"
@@ -80,20 +80,20 @@
                     {{ item.answer | trimLength }}
                 </md-table-cell>
                 <!-- Subject -->
-                <md-table-cell md-sort-by="subjectId" md-label="Kategorie">
-                    {{ getSubject(item.subjectId) | trimLength }}
+                <md-table-cell md-sort-by="subject_id" md-label="Kategorie">
+                    {{ getSubject(item.subject_id) | trimLength }}
                 </md-table-cell>
                 <!-- User -->
-                <md-table-cell md-sort-by="userId" md-label="Erstellt von">
+                <md-table-cell md-sort-by="user_id" md-label="Erstellt von">
                     <span class="role">
-                        {{ getUserRoleLetter(item.userId) }}
-                        <md-tooltip md-delay="600">{{ getUserRole(item.userId) }}</md-tooltip>
+                        {{ getUserRoleLetter(item.user_id) }}
+                        <md-tooltip md-delay="600">{{ getUserRole(item.user_id) }}</md-tooltip>
                     </span>
-                    {{ getUser(item.userId) }}
+                    {{ getUser(item.user_id) }}
                 </md-table-cell>
                 <!-- Date -->
-                <md-table-cell md-sort-by="createdAt" md-label="Erstellt am">
-                    {{ item.createdAt | formatDate }}
+                <md-table-cell md-sort-by="created_at" md-label="Erstellt am">
+                    {{ item.created_at | formatDate }}
                 </md-table-cell>
             </md-table-row>
         </md-table>
@@ -112,9 +112,9 @@
                     </md-field>
                     <md-field>
                         <label>Kategorie</label>
-                        <md-select v-model="newEntry.subjectId">
+                        <md-select v-model="newEntry.subject_id">
                             <md-option
-                                :value="option.subjectId"
+                                :value="option.subject_id"
                                 v-for="(option, index) in subjects"
                                 :key="index"
                             >
@@ -142,9 +142,9 @@
                 <span class="md-caption">
                     erstellt von
                 </span>
-                <span class="md-body-2">{{ getUser(shownEntry.userId) }}</span>
+                <span class="md-body-2">{{ getUser(shownEntry.user_id) }}</span>
                 <span> • </span>
-                <span class="md-body-2">{{ shownEntry.createdAt | formatDate }}</span>
+                <span class="md-body-2">{{ shownEntry.created_at | formatDate }}</span>
             </span>
             <md-dialog-content style="max-width: 600px;">
                 <div class="field">
@@ -156,7 +156,7 @@
                 <br />
                 <div class="field">
                     <span class="md-caption">Kategorie</span>
-                    <p class="md-body-2">{{ getSubject(shownEntry.subjectId) }}</p>
+                    <p class="md-body-2">{{ getSubject(shownEntry.subject_id) }}</p>
                 </div>
                 <br />
                 <div class="field">
@@ -193,14 +193,14 @@
                     </div>
                     <md-list class="comments">
                         <md-content class="md-scrollbar">
-                            <md-list-item v-for="comment in entryComments" :key="comment.commentId">
+                            <md-list-item v-for="comment in entryComments" :key="comment.comment_id">
                                 <div class="comment">
                                     <div class="top-line">
                                         <span class="md-body-2 username">{{
-                                            getUser(comment.userId)
+                                            getUser(comment.user_id)
                                         }}</span>
                                         <span class="md-caption date">{{
-                                            comment.createdAt | formatCommentDate
+                                            comment.created_at | formatCommentDate
                                         }}</span>
                                     </div>
                                     <p
@@ -211,9 +211,9 @@
                                     </p>
                                 </div>
                                 <md-button
-                                    v-if="comment.userId == 3"
+                                    v-if="comment.user_id == 3"
                                     class="md-icon-button md-accent"
-                                    @click="onDeleteComment(comment.commentId)"
+                                    @click="onDeleteComment(comment.comment_id)"
                                 >
                                     <md-icon>delete</md-icon>
                                 </md-button>

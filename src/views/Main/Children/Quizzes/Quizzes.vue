@@ -3,9 +3,7 @@
         <md-toolbar class="toolbar">
             <div class="col-1">
                 <span class="title">Quizkatalog</span>
-                <md-button class="md-raised md-primary"
-                    >Quiz erstellen</md-button
-                >
+                <md-button class="md-raised md-primary">Quiz erstellen</md-button>
             </div>
             <div class="col-2">
                 <md-field class="search">
@@ -18,28 +16,24 @@
             </div>
         </md-toolbar>
         <div class="quiz-container">
-            <md-card class="quiz" v-for="quiz in searched" :key="quiz.quizId">
+            <md-card class="quiz" v-for="quiz in searched" :key="quiz.quiz_id">
                 <md-card-header>
                     <div class="md-title">{{ quiz.title }}</div>
                     <div>
                         <span class="md-body-2">
-                            {{ getUser(quiz.userId) }}
+                            {{ getUser(quiz.user_id) }}
                         </span>
                         <span class="md-caption">
-                            {{ quiz.createdAt | formatFromNowDate }}
+                            {{ quiz.created_at | formatFromNowDate }}
                         </span>
                     </div>
                     <div class="subjects md-body-2">
                         <span class="md-caption">
                             Themen:
                         </span>
-                        {{ getQuizSubjects(quiz.quizId) }}
+                        {{ getQuizSubjects(quiz.quiz_id) }}
                     </div>
-                    <md-menu
-                        md-size="big"
-                        md-direction="bottom-end"
-                        class="more-button"
-                    >
+                    <md-menu md-size="big" md-direction="bottom-end" class="more-button">
                         <md-button class="md-icon-button" md-menu-trigger>
                             <md-icon>more_vert</md-icon>
                         </md-button>
@@ -63,7 +57,7 @@
                         <div>
                             <md-button
                                 class="md-raised md-primary"
-                                @click="onStartQuiz(quiz.quizId)"
+                                @click="onStartQuiz(quiz.quiz_id)"
                             >
                                 Quiz starten
                             </md-button>
@@ -88,25 +82,14 @@
             </md-card>
         </div>
         <md-card v-if="!quizzes">
-            <md-empty-state
-                md-label="Gähnende Leere"
-                md-description="Kein Quiz gefunden"
-            >
-                <md-button class="md-primary md-raised"
-                    >Quiz erstellen</md-button
-                >
+            <md-empty-state md-label="Gähnende Leere" md-description="Kein Quiz gefunden">
+                <md-button class="md-primary md-raised">Quiz erstellen</md-button>
             </md-empty-state>
         </md-card>
-        <md-dialog
-            :md-active.sync="showQuiz"
-            class="quiz-dialog"
-            v-if="showQuiz"
-        >
+        <md-dialog :md-active.sync="showQuiz" class="quiz-dialog" v-if="showQuiz">
             <md-dialog-title>{{ shownQuiz.title }}</md-dialog-title>
             <md-dialog-content v-if="!showAnswer">
-                <div class="md-caption">
-                    Frage {{ currentQuestion + 1 }}/{{ quizLength }}
-                </div>
+                <div class="md-caption">Frage {{ currentQuestion + 1 }}/{{ quizLength }}</div>
                 <span class="md-subheading">{{ quizQuestion }}</span>
                 <md-field class="answer-area">
                     <label>Deine Antwort</label>
@@ -115,24 +98,37 @@
                 <a class="show-hint">Hinweis zeigen</a>
             </md-dialog-content>
             <md-dialog-content v-else>
-                <div class="md-caption">
-                    Frage {{ currentQuestion + 1 }}/{{ quizLength }}
-                </div>
+                <div class="md-caption">Frage {{ currentQuestion + 1 }}/{{ quizLength }}</div>
                 <span class="md-subheading">{{ quizQuestion }}</span>
                 <span class="md-caption">Antwort</span>
                 <p class="answer md-body-1">
                     {{ quizAnswer }}
                 </p>
                 <div class="user-answer">
-                    <span class="md-caption">Deine Antwort</span>
+                    <div class="md-caption">Deine Antwort</div>
                     {{ answer }}
+                </div>
+                <div class="md-subheading">
+                    Wie richtig hast du gelegen?
+                </div>
+                <div class="self-evaluation">
+                    <md-radio class="md-accent" v-model="selfEvaluation" value="1"
+                        >Sehr falsch</md-radio
+                    >
+                    <md-radio class="md-accent" v-model="selfEvaluation" value="2">Falsch</md-radio>
+                    <md-radio class="md-primary" v-model="selfEvaluation" value="3"
+                        >Fast Richtig</md-radio
+                    >
+                    <md-radio class="md-primary" v-model="selfEvaluation" value="4"
+                        >Richtig</md-radio
+                    >
                 </div>
             </md-dialog-content>
             <md-dialog-actions>
                 <!-- <md-button class="md-raised" :disabled="currentQuestion < 1" @click="onPreviousQuestion()">Vorherige Frage</md-button> -->
                 <md-button
                     class="md-raised next-question-button"
-                    :disabled="currentQuestion + 1 == quizLength"
+                    :disabled="currentQuestion + 1 == quizLength || selfEvaluation == ''"
                     @click="onNextQuestion()"
                     >Nächste Frage</md-button
                 >
@@ -142,6 +138,13 @@
                     @click="showAnswer = true"
                     >Antwort anzeigen</md-button
                 >
+                <md-button
+                    class="md-raised md-accent"
+                    @click="onEndQuiz()"
+                    :disabled="!(currentQuestion + 1 !== quizLength && selfEvaluation !== '')"
+                >
+                    Quiz beenden
+                </md-button>
             </md-dialog-actions>
         </md-dialog>
     </div>

@@ -2,7 +2,7 @@
 require("mysql.php");;
 
 $data = array();
-$query = "SELECT * FROM entries ORDER BY createdAt DESC";
+$query = "SELECT * FROM entries ORDER BY created_at DESC";
 $statement = $mysql->prepare($query);
 $statement->execute();
 while ($row == $statement->fetch(PDO::FETCH_ASSOC)) {

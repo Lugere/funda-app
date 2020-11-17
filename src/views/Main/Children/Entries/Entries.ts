@@ -45,36 +45,36 @@ export default class Entries extends getterMixin {
     // Table Item Select
     public selected = [
         {
-            entryId: 0,
+            entry_id: 0,
         },
     ];
 
     public showNewEntry = false;
     public newEntry = {
         answer: "",
-        createdAt: moment().unix(),
-        entryId: 1,
+        created_at: moment().unix(),
+        entry_id: 1,
         hint: "",
         question: "",
-        subjectId: 1,
-        userId: 3,
+        subject_id: 1,
+        user_id: 3,
     };
     public resetNewEntry: any = {};
 
     public showEntry = false;
     public showEntryIndex: number = 0;
     public shownEntry = {
-        entryId: 1,
-        userId: 2,
-        subjectId: 3,
+        entry_id: 1,
+        user_id: 2,
+        subject_id: 3,
     };
 
     public newComment = {
-        commentId: 1,
+        comment_id: 1,
         content: "",
-        createdAt: moment().unix(),
-        entryId: 1,
-        userId: 1,
+        created_at: moment().unix(),
+        entry_id: 1,
+        user_id: 1,
     };
     public resetNewComment: any = {};
     public showComment = false;
@@ -92,7 +92,7 @@ export default class Entries extends getterMixin {
 
     public searchBySubject(items) {
         if (this.currentSubject == 0) return items;
-        return (this.searched = this.searched.filter(x => x.subjectId == this.currentSubject));
+        return (this.searched = this.searched.filter(x => x.subject_id == this.currentSubject));
     }
 
     public searchOnTable(): void {
@@ -113,7 +113,7 @@ export default class Entries extends getterMixin {
 
     public deleteEntries(): void {
         for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.entries.findIndex(x => x.entryId == this.selected[i].entryId);
+            let pos = this.entries.findIndex(x => x.entry_id == this.selected[i].entry_id);
             this.entries.splice(pos, 1);
         }
     }
@@ -124,21 +124,21 @@ export default class Entries extends getterMixin {
         this.newEntry.question = "";
         this.newEntry.answer = "";
         this.newEntry.hint = "";
-        this.newEntry.subjectId = 1;
+        this.newEntry.subject_id = 1;
     }
 
     public onNewEntry(): void {
         // Create new entry
-        this.newEntry.createdAt = moment().unix();
-        this.newEntry.entryId = this.entries.length + 1;
+        this.newEntry.created_at = moment().unix();
+        this.newEntry.entry_id = this.entries.length + 1;
         store.dispatch("createEntry", this.newEntry);
         // Reset Dialog
         this.onAbortNewEntry();
     }
 
-    public onShowEntry(entryId): void {
+    public onShowEntry(entry_id): void {
         this.showEntry = true;
-        this.showEntryIndex = this.entries.findIndex(x => x.entryId == entryId);
+        this.showEntryIndex = this.entries.findIndex(x => x.entry_id == entry_id);
         this.shownEntry = this.entries[this.showEntryIndex];
     }
 
@@ -148,28 +148,28 @@ export default class Entries extends getterMixin {
     }
 
     public onCreateNewComment(): void {
-        this.newComment.createdAt = moment().unix();
-        this.newComment.commentId = this.comments.length + 1;
-        this.newComment.entryId = this.shownEntry.entryId;
-        this.newComment.userId = 3;
+        this.newComment.created_at = moment().unix();
+        this.newComment.comment_id = this.comments.length + 1;
+        this.newComment.entry_id = this.shownEntry.entry_id;
+        this.newComment.user_id = 3;
         store.dispatch("createComment", this.newComment);
         // Reset dialog
         this.onAbortNewComment();
     }
 
-    public onDeleteComment(commentId): void {
-        let pos = this.comments.findIndex(x => x.commentId == commentId);
+    public onDeleteComment(comment_id): void {
+        let pos = this.comments.findIndex(x => x.comment_id == comment_id);
         this.comments.splice(pos, 1);
     }
 
     /* Getters */
 
     get entryComments() {
-        return this.comments.filter(x => x.entryId == this.shownEntry.entryId);
+        return this.comments.filter(x => x.entry_id == this.shownEntry.entry_id);
     }
 
     get commentsCount() {
-        let count = this.comments.filter(x => x.entryId == this.shownEntry.entryId).length;
+        let count = this.comments.filter(x => x.entry_id == this.shownEntry.entry_id).length;
         if (count > 0) return `${count} Kommentar${count > 1 ? "e" : ""}`;
         return "Keine Kommentare";
     }
@@ -180,5 +180,6 @@ export default class Entries extends getterMixin {
         this.selected = [];
         this.currentSubject = this.subject;
         this.searchOnTable();
+        console.log(store.state.entries);
     }
 }

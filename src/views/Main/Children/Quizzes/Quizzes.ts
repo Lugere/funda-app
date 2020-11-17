@@ -24,13 +24,7 @@ import getterMixin from "@/mixins/getterMixin";
         },
     },
     computed: {
-        ...mapState([
-            "quizzes",
-            "quiz_entries",
-            "users",
-            "entries",
-            "subjects",
-        ]),
+        ...mapState(["quizzes", "quiz_entries", "users", "entries", "subjects"]),
     },
 })
 export default class Quizzes extends getterMixin {
@@ -46,41 +40,54 @@ export default class Quizzes extends getterMixin {
     public showQuiz = false;
     public shownQuiz: any = [
         {
-            quizId: 0,
+            quiz_id: 0,
         },
     ];
     public showAnswer = false;
     public currentQuestion = 0;
     public answer = "";
+    public selfEvaluation = "";
 
     /* Methods */
     public searchByEntry(items, term): any {
         if (!term) return items;
         const toLower = text => text.toString().toLowerCase();
-        return items.filter(item =>
-            toLower(item.title).includes(toLower(term))
-        );
+        return items.filter(item => toLower(item.title).includes(toLower(term)));
     }
 
     public searchOnTable(): void {
         this.searched = this.searchByEntry(this.quizzes, this.search);
     }
 
-    public getQuizSubjects(): string {
+    public getQuizSubjects(quiz_id): string {
         let subjects = "";
-        const getSubjectId = quiz_entry => {
-            return this.entries[quiz_entry.entryId - 1].subjectId;
+        const getsubject_id = quiz_entry => {
+            return this.entries[quiz_entry.entry_id - 1].subject_id;
         };
-        this.quiz_entries.forEach(quiz_entry => {
-            subjects += `${this.getSubject(getSubjectId(quiz_entry))}, `;
+        let _quiz_entries = this.quiz_entries.filter(x => x.quiz_id == quiz_id);
+        _quiz_entries.forEach(quiz_entry => {
+            let subject = `${this.getSubject(getsubject_id(quiz_entry))}, `;
+            // Make sure that there are no duplicates
+            if (!subjects.includes(subject)) subjects += subject;
         });
+        // Remove last comma from string
         return subjects.substring(0, subjects.length - 2);
     }
 
-    public onStartQuiz(quizId) {
-        this.shownQuiz = this.quizzes.find(x => x.quizId == quizId);
+    public onStartQuiz(quiz_id) {
+        this.shownQuiz = this.quizzes.find(x => x.quiz_id == quiz_id);
         this.showQuiz = true;
         this.showAnswer = false;
+        this.currentQuestion = 0;
+        this.selfEvaluation = "";
+    }
+
+    public onEndQuiz() {
+        this.showQuiz = false;
+        this.showAnswer = false;
+        this.currentQuestion = 0;
+        this.selfEvaluation = "";
+        this.answer = "";
     }
 
     // public onPreviousQuestion() {
@@ -91,29 +98,26 @@ export default class Quizzes extends getterMixin {
     public onNextQuestion() {
         this.currentQuestion++;
         this.showAnswer = false;
+        this.selfEvaluation = "";
         this.answer = "";
     }
 
     public get quizLength() {
         let length = 0;
         this.quiz_entries.forEach(entry => {
-            if (entry.quizId == this.shownQuiz.quizId) length++;
+            if (entry.quiz_id == this.shownQuiz.quiz_id) length++;
         });
         return length;
     }
 
     public get quizQuestion() {
-        let entry = this.quiz_entries.find(
-            x => x.quizId == this.shownQuiz.quizId
-        );
-        return this.entries.find(x => x.entryId == entry.entryId).question;
+        let entry = this.quiz_entries.filter(x => x.quiz_id == this.shownQuiz.quiz_id);
+        return this.entries.find(x => x.entry_id == entry[this.currentQuestion].entry_id).question;
     }
 
     public get quizAnswer() {
-        let entry = this.quiz_entries.find(
-            x => x.quizId == this.shownQuiz.quizId
-        );
-        return this.entries.find(x => x.entryId == entry.entryId).answer;
+        let entry = this.quiz_entries.filter(x => x.quiz_id == this.shownQuiz.quiz_id);
+        return this.entries.find(x => x.entry_id == entry[this.currentQuestion].entry_id).answer;
     }
 
     mounted() {

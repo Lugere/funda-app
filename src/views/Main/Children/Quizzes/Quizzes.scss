@@ -50,8 +50,8 @@
 }
 
 .quiz-dialog {
-    &.md-dialog-content {
-        width: 600px;
+    .md-dialog-container {
+        min-width: 600px !important;
     }
 
     .answer-area {
@@ -65,6 +65,10 @@
 
     .show-hint {
         margin-top: -10px;
+    }
+
+    .user-answer {
+        margin-bottom: 1em;
     }
 
     .next-question-button:not([disabled]) {

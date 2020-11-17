@@ -7,7 +7,7 @@
             md-fixed-header
             md-height="737px"
             md-sort-order="desc"
-            md-sort="createdAt"
+            md-sort="created_at"
             v-model="searched"
         >
             <md-table-toolbar class="toolbar">
@@ -51,7 +51,7 @@
                 slot="md-table-row"
                 class="row"
                 md-sort-order="asc"
-                md-sort="createdAt"
+                md-sort="created_at"
                 slot-scope="{ item }"
                 md-selectable="multiple"
             >
@@ -65,21 +65,21 @@
                 </md-table-cell>
                 <!-- Entry Count -->
                 <md-table-cell md-sort-by="entryCount" md-label="Anzahl Fragen">
-                    <span class="entry-count" @click="showQuestions(item.subjectId)">
-                        {{ `${getEntriesLength(item.subjectId)} Fragen` }}
+                    <span class="entry-count" @click="showQuestions(item.subject_id)">
+                        {{ `${getEntriesLength(item.subject_id)} Fragen` }}
                     </span>
                 </md-table-cell>
                 <!-- User -->
-                <md-table-cell md-sort-by="userId" md-label="Erstellt von">
+                <md-table-cell md-sort-by="user_id" md-label="Erstellt von">
                     <span class="role">
-                        {{ getUserRoleLetter(item.userId) }}
-                        <md-tooltip md-delay="600">{{ getUserRole(item.userId) }}</md-tooltip>
+                        {{ getUserRoleLetter(item.user_id) }}
+                        <md-tooltip md-delay="600">{{ getUserRole(item.user_id) }}</md-tooltip>
                     </span>
-                    {{ getUser(item.userId) }}
+                    {{ getUser(item.user_id) }}
                 </md-table-cell>
                 <!-- Date -->
-                <md-table-cell md-sort-by="createdAt" md-label="Erstellt am">
-                    {{ item.createdAt | formatDate }}
+                <md-table-cell md-sort-by="created_at" md-label="Erstellt am">
+                    {{ item.created_at | formatDate }}
                 </md-table-cell>
             </md-table-row>
         </md-table>

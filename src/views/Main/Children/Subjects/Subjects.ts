@@ -36,17 +36,17 @@ export default class Subjects extends getterMixin {
     // Table Item Select
     public selected = [
         {
-            subjectId: 0,
+            subject_id: 0,
         },
     ];
 
     public showNewSubject = false;
     public newSubject = {
-        subjectId: 1,
+        subject_id: 1,
         title: "",
         description: "",
-        userId: 3,
-        createdAt: moment().unix(),
+        user_id: 3,
+        created_at: moment().unix(),
     };
     public resetNewSubject = this.newSubject;
 
@@ -75,13 +75,13 @@ export default class Subjects extends getterMixin {
         this.selected = items;
     }
 
-    public getUser(userId) {
-        return `${this.users.find(x => x.userId == userId).firstName} 
-                ${this.users.find(x => x.userId == userId).lastName}`;
+    public getUser(user_id) {
+        return `${this.users.find(x => x.user_id == user_id).first_name} 
+                ${this.users.find(x => x.user_id == user_id).last_name}`;
     }
 
-    public getUserRole(userId) {
-        let role = this.users.find(x => x.userId == userId).role;
+    public getUserRole(user_id) {
+        let role = this.users.find(x => x.user_id == user_id).role;
         switch (role) {
             case "admin":
                 return "Administrator";
@@ -92,8 +92,8 @@ export default class Subjects extends getterMixin {
         }
     }
 
-    public getUserRoleLetter(userId) {
-        let role = this.users.find(x => x.userId == userId).role;
+    public getUserRoleLetter(user_id) {
+        let role = this.users.find(x => x.user_id == user_id).role;
         switch (role) {
             case "admin":
                 return "A";
@@ -104,18 +104,18 @@ export default class Subjects extends getterMixin {
         }
     }
 
-    public getEntriesLength(subjectId): number {
+    public getEntriesLength(subject_id): number {
         let count = 0;
         this.entries.forEach(entry => {
-            if (entry.subjectId == subjectId) count++;
+            if (entry.subject_id == subject_id) count++;
         });
         return count;
     }
 
     public deleteSubjects(): void {
         for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.subjects.findIndex(x => x.subjectId == this.selected[i].subjectId);
-            if (this.entries.find(x => x.subjectId == this.subjects[pos].subjectId)) {
+            let pos = this.subjects.findIndex(x => x.subject_id == this.selected[i].subject_id);
+            if (this.entries.find(x => x.subject_id == this.subjects[pos].subject_id)) {
                 alert("Es gibt Fragen die dieser Kategorie angehören!");
                 return;
             } else this.subjects.splice(pos, 1);
@@ -131,15 +131,15 @@ export default class Subjects extends getterMixin {
 
     public onNewSubject(): void {
         // Create new Subject
-        this.newSubject.subjectId = this.subjects.length + 1;
+        this.newSubject.subject_id = this.subjects.length + 1;
         store.dispatch("createSubject", this.newSubject);
         // Hide Dialog
         this.showNewSubject = false;
         this.newSubject = this.resetNewSubject;
     }
 
-    public showQuestions(subjectId): void {
-        store.commit("setSubject", subjectId);
+    public showQuestions(subject_id): void {
+        store.commit("setSubject", subject_id);
         this.$router.push("/Entries");
     }
 
