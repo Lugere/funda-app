@@ -1,0 +1,75 @@
+@import "utilities/_variables";
+#users {
+    padding: 1em;
+    * {
+        color: $darkblue !important;
+    }
+    .table {
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            .col-1 {
+                display: flex;
+                align-items: center;
+                .add-user-btn {
+                    margin-left: 2em;
+                }
+                .title {
+                    font-size: 16pt;
+                }
+                .subject-select {
+                    width: 250px;
+                    margin-left: 2em;
+                }
+            }
+            .search {
+                width: 300px !important;
+            }
+        }
+        .row {
+            cursor: pointer;
+            .role {
+                font-family: "Roboto Bold";
+                margin-right: 1em;
+            }
+        }
+    }
+}
+
+.new-user-dialog,
+.user-dialog * {
+    .md-dialog-container {
+        min-width: 600px !important;
+    }
+}
+
+.user-dialog {
+    .title {
+        margin: 0;
+    }
+    .subtitle {
+        margin: 0 0 20px 24px;
+    }
+    .comment-section {
+        margin-top: 1em;
+        position: relative;
+        .create-comment {
+            .button-group {
+                .md-button {
+                    margin-left: 0;
+                }
+            }
+        }
+        .comments {
+            max-height: 100px;
+            .md-scrollbar {
+                // max-height: 100px;
+                .comment {
+                    .username {
+                        margin-right: 7px;
+                    }
+                }
+            }
+        }
+    }
+}
