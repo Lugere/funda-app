@@ -1,0 +1,73 @@
+@import "utilities/_variables";
+
+#quizzes {
+    padding: 1em;
+
+    .toolbar {
+        margin-bottom: 1em;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .col-1 {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+
+            .title {
+                font-size: 16pt;
+                margin-right: 1em;
+            }
+        }
+
+        .search {
+            width: 300px;
+        }
+    }
+
+    .quiz-container {
+        display: grid;
+        gap: 1em;
+        grid-template-columns: repeat(auto-fill, 350px);
+
+        .quiz {
+            width: 350px;
+            position: relative;
+
+            .more-button {
+                position: absolute;
+                top: 1em;
+                right: 1em;
+            }
+
+            .show-entries-button {
+                background-color: $blue;
+                color: $white;
+            }
+        }
+    }
+}
+
+.quiz-dialog {
+    &.md-dialog-content {
+        width: 600px;
+    }
+
+    .answer-area {
+        margin-bottom: 5px !important;
+    }
+
+    .answer {
+        width: 500px;
+        margin-bottom: 1em;
+    }
+
+    .show-hint {
+        margin-top: -10px;
+    }
+
+    .next-question-button:not([disabled]) {
+        background-color: $blue !important;
+    }
+}

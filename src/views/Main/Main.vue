@@ -63,11 +63,6 @@
             <div class="function">
                 <div class="col col-1">
                     <span class="funda">Funda</span>
-                    <!-- <div class="breadcrumbs">
-                        <span class="crumb">Home</span> /
-                        <span class="crumb">Computerkomponenten</span> /
-                        <span class="current-crumb crumb">Wie ist ein CPU aufgebaut?</span>
-                    </div> -->
                     <span class="md-body-2 funda-sub">Fragen und Antworten | {{ getRouteString() }}</span>
                 </div>
                 <div class="col col-2">

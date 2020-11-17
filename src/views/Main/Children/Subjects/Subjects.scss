@@ -1,0 +1,53 @@
+@import "utilities/_variables";
+
+#subjects {
+    padding: 1em;
+
+    * {
+        color: $darkblue;
+    }
+
+    .table {
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+
+            .col-1 {
+                display: flex;
+                align-items: center;
+
+                .add-subject-btn {
+                    margin-left: 2em;
+                }
+
+                .title {
+                    font-size: 16pt;
+                }
+
+                .subject-select {
+                    width: 250px;
+                    margin-left: 2em;
+                }
+            }
+
+            .search {
+                width: 300px !important;
+            }
+        }
+
+        .row {
+            .role {
+                font-family: "Roboto Bold";
+                margin-right: 1em;
+            }
+
+            .entry-count {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .new-subject-dialog {
+        width: 600px !important;
+    }
+}

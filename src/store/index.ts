@@ -148,21 +148,21 @@ const store = new Vuex.Store({
                 quizId: 1,
                 entryId: 1,
             },
-            // {
-            //     quizEntry_id: 2,
-            //     quizId: 2,
-            //     entryId: 1,
-            // },
-            // {
-            //     quizEntry_id: 3,
-            //     quizId: 2,
-            //     entryId: 4,
-            // },
-            // {
-            //     quizEntry_id: 4,
-            //     quizId: 2,
-            //     entryId: 3,
-            // },
+            {
+                quizEntry_id: 2,
+                quizId: 2,
+                entryId: 1,
+            },
+            {
+                quizEntry_id: 3,
+                quizId: 2,
+                entryId: 4,
+            },
+            {
+                quizEntry_id: 4,
+                quizId: 2,
+                entryId: 3,
+            },
         ],
         subject: 0,
     },
@@ -195,7 +195,7 @@ const store = new Vuex.Store({
 
         async fetchEntries({ commit }) {
             await Vue.axios
-                .post("http://localhost/funda/fetchDB.php", { table: "entries" })
+                .post("http://localhost/funda/fetchEntries.php")
                 .then(async response => commit("setState", response.data))
                 .catch(e => console.error(`Error fetching tables: ${e}`));
         },
