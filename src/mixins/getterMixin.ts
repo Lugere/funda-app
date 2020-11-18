@@ -13,11 +13,10 @@ export default class getterMixin extends Vue {
     public subjects!: any;
 
     public getSubject(subject_id) {
-        // return `${this.subjects.find(x => x.subject_id == subject_id).title}`;
-        return "asf";
+        return `${this.subjects.find(x => x.subject_id == subject_id).title}`;
     }
 
-    public getUser(user_id: number) {
+    public getUser(user_id: number) { 
         return `${this.users.find(x => x.user_id == user_id).first_name} 
                 ${this.users.find(x => x.user_id == user_id).last_name}`;
     }

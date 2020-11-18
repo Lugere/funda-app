@@ -63,8 +63,12 @@ export default class Main extends getterMixin {
 
     /* Lifecycle hooks */
 
-    public mounted() {
+    public created() {
         store.dispatch("fetchEntries");
+        store.dispatch("fetchSubjects");
+        store.dispatch("fetchUsers");
+        store.dispatch("fetchQuizzes");
+        store.dispatch("fetchComments");
         this.setTimestamp();
         document.title = `FUNDA - Fragen & Antworten | ${this.getRouteString()}`;
     }

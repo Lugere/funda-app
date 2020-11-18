@@ -42,11 +42,10 @@ export default class Subjects extends getterMixin {
 
     public showNewSubject = false;
     public newSubject = {
-        subject_id: 1,
         title: "",
         description: "",
-        user_id: 3,
         created_at: moment().unix(),
+        user_id: 3,
     };
     public resetNewSubject = this.newSubject;
 
@@ -73,35 +72,6 @@ export default class Subjects extends getterMixin {
 
     public onSelect(items): void {
         this.selected = items;
-    }
-
-    public getUser(user_id) {
-        return `${this.users.find(x => x.user_id == user_id).first_name} 
-                ${this.users.find(x => x.user_id == user_id).last_name}`;
-    }
-
-    public getUserRole(user_id) {
-        let role = this.users.find(x => x.user_id == user_id).role;
-        switch (role) {
-            case "admin":
-                return "Administrator";
-            case "teacher":
-                return "Lehrer";
-            case "student":
-                return "Schüler";
-        }
-    }
-
-    public getUserRoleLetter(user_id) {
-        let role = this.users.find(x => x.user_id == user_id).role;
-        switch (role) {
-            case "admin":
-                return "A";
-            case "teacher":
-                return "L";
-            case "student":
-                return "S";
-        }
     }
 
     public getEntriesLength(subject_id): number {
@@ -131,7 +101,6 @@ export default class Subjects extends getterMixin {
 
     public onNewSubject(): void {
         // Create new Subject
-        this.newSubject.subject_id = this.subjects.length + 1;
         store.dispatch("createSubject", this.newSubject);
         // Hide Dialog
         this.showNewSubject = false;

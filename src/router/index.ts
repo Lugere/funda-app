@@ -6,6 +6,7 @@ import Home from "../views/Main/Children/Home/Home.vue";
 import Entries from "../views/Main/Children/Entries/Entries.vue";
 import Subjects from "../views/Main/Children/Subjects/Subjects.vue";
 import Quizzes from "../views/Main/Children/Quizzes/Quizzes.vue";
+import Users from "../views/Main/Children/Users/Users.vue";
 
 Vue.use(VueRouter);
 
@@ -66,13 +67,13 @@ const routes: RouteConfig[] = [
                 },
             },
             {
-                path: "/Statistics",
-                name: "Statistics",
+                path: "/Users",
+                name: "Users",
                 meta: {
                     requiresAuth: true,
-                    breadcrumb: "Auswertung",
+                    breadcrumb: "Benutzer",
                 },
-                // component: Statistics,
+                component: Users,
             },
         ],
         component: Main,

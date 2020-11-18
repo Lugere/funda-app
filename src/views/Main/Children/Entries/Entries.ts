@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from '@/mixins/getterMixin';
+import getterMixin from "@/mixins/getterMixin";
 
 @Component({
     computed: {
@@ -51,13 +51,12 @@ export default class Entries extends getterMixin {
 
     public showNewEntry = false;
     public newEntry = {
-        answer: "",
-        created_at: moment().unix(),
-        entry_id: 1,
-        hint: "",
-        question: "",
         subject_id: 1,
         user_id: 3,
+        question: "",
+        answer: "",
+        hint: "",
+        created_at: moment().unix(),
     };
     public resetNewEntry: any = {};
 
@@ -70,11 +69,10 @@ export default class Entries extends getterMixin {
     };
 
     public newComment = {
-        comment_id: 1,
         content: "",
-        created_at: moment().unix(),
         entry_id: 1,
         user_id: 1,
+        created_at: moment().unix(),
     };
     public resetNewComment: any = {};
     public showComment = false;
@@ -114,7 +112,7 @@ export default class Entries extends getterMixin {
     public deleteEntries(): void {
         for (let i = 0; i < this.selected.length; i++) {
             let pos = this.entries.findIndex(x => x.entry_id == this.selected[i].entry_id);
-            this.entries.splice(pos, 1);
+            store.dispatch("deleteEntry", this.entries[pos].entry_id);
         }
     }
 
@@ -130,7 +128,6 @@ export default class Entries extends getterMixin {
     public onNewEntry(): void {
         // Create new entry
         this.newEntry.created_at = moment().unix();
-        this.newEntry.entry_id = this.entries.length + 1;
         store.dispatch("createEntry", this.newEntry);
         // Reset Dialog
         this.onAbortNewEntry();
@@ -149,7 +146,6 @@ export default class Entries extends getterMixin {
 
     public onCreateNewComment(): void {
         this.newComment.created_at = moment().unix();
-        this.newComment.comment_id = this.comments.length + 1;
         this.newComment.entry_id = this.shownEntry.entry_id;
         this.newComment.user_id = 3;
         store.dispatch("createComment", this.newComment);
@@ -180,6 +176,5 @@ export default class Entries extends getterMixin {
         this.selected = [];
         this.currentSubject = this.subject;
         this.searchOnTable();
-        console.log(store.state.entries);
     }
 }

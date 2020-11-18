@@ -45,6 +45,14 @@
                     <md-icon class="icon">question_answer</md-icon>
                     <span class="name">Lernquiz</span>
                 </div>
+                <div
+                    class="item md-body-2"
+                    :class="{ active: checkRoute('/Users') }"
+                    @click="changeRoute('/Users')"
+                >
+                    <md-icon class="icon">person</md-icon>
+                    <span class="name">Benutzer</span>
+                </div>
                 <!-- <div
                     class="item md-body-2"
                     :class="{ active: checkRoute('/Statistics') }"
