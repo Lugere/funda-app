@@ -7,6 +7,8 @@ import Entries from "../views/Main/Children/Entries/Entries.vue";
 import Subjects from "../views/Main/Children/Subjects/Subjects.vue";
 import Quizzes from "../views/Main/Children/Quizzes/Quizzes.vue";
 import Users from "../views/Main/Children/Users/Users.vue";
+import store from "@/store";
+import { Store } from "vuex";
 
 Vue.use(VueRouter);
 
@@ -20,7 +22,7 @@ const routes: RouteConfig[] = [
         name: "Login",
         component: Login,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
         },
     },
     {
@@ -71,6 +73,7 @@ const routes: RouteConfig[] = [
                 name: "Users",
                 meta: {
                     requiresAuth: true,
+                    requiresAdmin: true,
                     breadcrumb: "Benutzer",
                 },
                 component: Users,
@@ -86,6 +89,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    // const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    // const isAuthenticated = store.state.currentUser;
+    // if (isAuthenticated && to.path == "/") next("Entries");
+    // if (isAuthenticated && !requiresAuth) next("Entries");
+    // if (!isAuthenticated && requiresAuth) next("Login");
+    // else next();
+
     document.title = `FUNDA - Fragen & Antworten | ${to.meta.breadcrumb}`;
     next();
 });

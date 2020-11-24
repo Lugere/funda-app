@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import router from "../router";
-import axios from "axios";
-import Login from "@/views/Login/Login";
+import mainEventBus from "@/components/mainEventBus";
 
 Vue.use(Vuex);
 
@@ -15,8 +14,12 @@ const store = new Vuex.Store({
         quizzes: [],
         quiz_entries: [],
         subject: 0,
+        currentUser: {}
     }),
     mutations: {
+        setUser(state, val) {
+            state.currentUser = val;
+        },
         setEntries(state, val) {
             state.entries = val;
             state.subject = 0;
@@ -34,7 +37,6 @@ const store = new Vuex.Store({
             state.quiz_entries = val;
         },
         setComments(state, val) {
-            console.log(val);
             state.comments = val;
         },
         setSubject(state, val) {
@@ -46,8 +48,29 @@ const store = new Vuex.Store({
             router.push("Login");
         },
 
-        async login() {
-            router.push("/");
+        async login({ dispatch, commit }, data) {
+            // let { email, password } = data;
+            // await Vue.axios
+            //     .post("http://localhost/api/login.php", {
+            //         email: email,
+            //         password: password,
+            //     })
+            //     .then(response => {
+            //         console.log(response.data);
+            //         // commit("setUser", response.data);
+            //     });
+            router.push("Entries");
+        },
+
+        async fetchUser({ commit }) {},
+
+        async fetchAll({ dispatch }) {
+            dispatch("fetchEntries");
+            dispatch("fetchSubjects");
+            dispatch("fetchUsers");
+            dispatch("fetchQuizzes");
+            dispatch("fetchComments");
+            mainEventBus.$emit("fetchedDb");
         },
 
         async fetchEntries({ commit }) {
@@ -77,7 +100,9 @@ const store = new Vuex.Store({
                 .then(async response => commit("setQuizzes", response.data))
                 .catch(e => console.error(`Error fetching quizzes: ${e}`));
             await Vue.axios
-                .get("http://localhost/api/fetchEntries.php?tableName=quiz_entries")
+                .get(
+                    "http://localhost/api/fetchEntries.php?tableName=quiz_entries"
+                )
                 .then(async response => commit("setQuizEntries", response.data))
                 .catch(e => console.error(`Error fetching quiz_entries: ${e}`));
         },
@@ -90,66 +115,46 @@ const store = new Vuex.Store({
         },
 
         async createEntry({ dispatch }, entry) {
+            let { data, tableName } = entry;
             await Vue.axios
                 .post(
                     "http://localhost/api/createEntry.php",
                     JSON.stringify({
-                        entry: entry,
-                        tableName: "entries",
+                        entry: data,
+                        tableName: tableName,
                     })
                 )
-                .then(() => {
-                    dispatch("fetchEntries");
-                })
+                .then(() => dispatch("fetchAll"))
                 .catch(e => console.error(`Error creating entry: ${e}`));
         },
 
-        async deleteEntry({ dispatch }, entry_id) {
+        async deleteEntry({ dispatch }, entry) {
+            let { id, tableName, columnName } = entry;
             await Vue.axios
                 .post(
                     "http://localhost/api/deleteEntry.php",
                     JSON.stringify({
-                        tableName: "entries",
-                        column: "entry_id",
-                        id: entry_id,
+                        id: id,
+                        tableName: tableName,
+                        columnName: columnName,
                     })
                 )
-                .then(response => {
-                    dispatch("fetchEntries");
-                    console.log(response.data);
-                })
+                .then(() => dispatch("fetchAll"))
                 .catch(e => console.error(`Error deleting entry: ${e}`));
         },
 
-        async createSubject({ dispatch, commit }, subject) {
+        async updateEntry({ dispatch }, entry) {
+            let { data, tableName, id } = entry;
             await Vue.axios
                 .post(
-                    "http://localhost/api/createEntry.php",
+                    "http://localhost/api/updateEntry.php",
                     JSON.stringify({
-                        entry: subject,
-                        tableName: "subjects",
+                        tableName: tableName,
+                        entry: data,
                     })
                 )
-                .then(() => {
-                    dispatch("fetchSubjects");
-                })
-                .catch(e => console.error(`Error creating entry: ${e}`));
-        },
-
-        async createComment({ dispatch, commit }, comment) {
-            await Vue.axios
-                .post(
-                    "http://localhost/api/createEntry.php",
-                    JSON.stringify({
-                        entry: comment,
-                        tableName: "comments",
-                    })
-                )
-                .then(response => {
-                    console.log(response.data);
-                    dispatch("fetchSubjects");
-                })
-                .catch(e => console.error(`Error creating entry: ${e}`));
+                .then(response => console.log(response.data))
+                .catch(e => console.error(`Error deleting entry: ${e}`));
         },
     },
     modules: {},

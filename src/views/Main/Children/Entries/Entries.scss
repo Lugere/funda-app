@@ -47,8 +47,8 @@
 }
 
 .new-entry-dialog,
-.entry-dialog * {
-    &.md-dialog-container {
+.entry-dialog {
+    .md-dialog-container {
         min-width: 600px !important;
     }
 }

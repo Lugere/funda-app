@@ -49,6 +49,9 @@
                 <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
 
                 <div class="md-toolbar-section-end">
+                    <md-button :disabled="selected.length !== 1" class="md-icon-button" @click="onShowUpdate()">
+                        <md-icon>create</md-icon>
+                    </md-button>
                     <md-button class="md-icon-button" @click="deleteEntries()">
                         <md-icon>delete</md-icon>
                     </md-button>
@@ -99,7 +102,7 @@
         </md-table>
         <!-- Add new Entry Dialog -->
         <md-dialog class="new-entry-dialog" :md-active.sync="showNewEntry">
-            <md-dialog-title>Frage erstellen</md-dialog-title>
+            <md-dialog-title>Frage {{ isUpdate ? "bearbeiten" : "erstellen" }}</md-dialog-title>
             <md-dialog-content>
                 <form>
                     <md-field>
@@ -129,7 +132,7 @@
                 </form>
                 <md-dialog-actions>
                     <md-button class="md-accent" @click="onAbortNewEntry()">Abbrechen</md-button>
-                    <md-button class="md-primary md-raised" @click="onNewEntry()"
+                    <md-button class="md-primary md-raised" @click="isUpdate ? onUpdateEntry() : onNewEntry()"
                         >Speichern</md-button
                     >
                 </md-dialog-actions>
@@ -181,7 +184,7 @@
                         <div v-if="showComment" class="button-group">
                             <md-button
                                 class="md-primary md-raised"
-                                @click="onCreateNewComment()"
+                                @click="onNewComment()"
                                 :disabled="newComment.content == ''"
                             >
                                 Kommentieren

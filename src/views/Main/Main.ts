@@ -9,13 +9,16 @@ import getterMixin from '@/mixins/getterMixin';
         SiteNav,
     },
     computed: {
-        ...mapState(["entries"]),
+        ...mapState(["entries", "currentUser", "userState"]),
     },
 })
 export default class Main extends getterMixin {
     /* Data */
 
     public entries!: any;
+    public currentUser!: any;
+    public userState!: any;
+
     public date = "";
     public time = "";
     public search = "";
@@ -63,12 +66,9 @@ export default class Main extends getterMixin {
 
     /* Lifecycle hooks */
 
-    public created() {
-        store.dispatch("fetchEntries");
-        store.dispatch("fetchSubjects");
-        store.dispatch("fetchUsers");
-        store.dispatch("fetchQuizzes");
-        store.dispatch("fetchComments");
+    public mounted() {
+        store.dispatch("fetchAll");
+        store.dispatch("fetchUser");
         this.setTimestamp();
         document.title = `FUNDA - Fragen & Antworten | ${this.getRouteString()}`;
     }

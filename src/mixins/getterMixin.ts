@@ -4,7 +4,13 @@ import { Component, Mixin } from "vue-mixin-decorator";
 
 @Component({
     computed: {
-        ...mapState(["quizzes", "quiz_entries", "users", "entries", "subjects"]),
+        ...mapState([
+            "quizzes",
+            "quiz_entries",
+            "users",
+            "entries",
+            "subjects",
+        ]),
     },
 })
 export default class getterMixin extends Vue {
@@ -13,36 +19,41 @@ export default class getterMixin extends Vue {
     public subjects!: any;
 
     public getSubject(subject_id) {
-        return `${this.subjects.find(x => x.subject_id == subject_id).title}`;
+        return `${subject_id}`;
+        // return `${this.subjects.find(x => x.subject_id == subject_id).title}
     }
 
-    public getUser(user_id: number) { 
-        return `${this.users.find(x => x.user_id == user_id).first_name} 
-                ${this.users.find(x => x.user_id == user_id).last_name}`;
+    public getUser(user_id: number) {
+        // console.log(this.users);
+        return `${user_id}`;
+        // return `${this.users.find(x => x.user_id == user_id).first_name}
+        //         ${this.users.find(x => x.user_id == user_id).last_name}`;
     }
 
     public getUserRole(user_id) {
-        let role = this.users.find(x => x.user_id == user_id).role;
-        switch (role) {
-            case "admin":
-                return "Administrator";
-            case "teacher":
-                return "Lehrer";
-            case "student":
-                return "Schüler";
-        }
+        return `${user_id}`;
+        // let role = this.users.find(x => x.user_id == user_id).role;
+        // switch (role) {
+        //     case "admin":
+        //         return "Administrator";
+        //     case "teacher":
+        //         return "Lehrer";
+        //     case "student":
+        //         return "Schüler";
+        // }
     }
 
     public getUserRoleLetter(user_id) {
-        let role = this.users.find(x => x.user_id == user_id).role;
-        switch (role) {
-            case "admin":
-                return "A";
-            case "teacher":
-                return "L";
-            case "student":
-                return "S";
-        }
+        return `${user_id}`;
+        // let role = this.users.find(x => x.user_id == user_id).role;
+        // switch (role) {
+        //     case "admin":
+        //         return "A";
+        //     case "teacher":
+        //         return "L";
+        //     case "student":
+        //         return "S";
+        // }
     }
 
     public getRouteString(): string {

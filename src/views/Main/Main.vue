@@ -13,14 +13,6 @@
                 <img src="@/assets/img/logo.png" />
             </div>
             <ul class="list">
-                <!-- <div
-                    class="item md-body-2"
-                    :class="{ active: checkRoute('/Home') }"
-                    @click="changeRoute('/Home')"
-                >
-                    <md-icon class="icon">home</md-icon>
-                    <span class="name">Home</span>
-                </div> -->
                 <div
                     class="item md-body-2"
                     :class="{ active: checkRoute('/Entries') }"
@@ -71,7 +63,9 @@
             <div class="function">
                 <div class="col col-1">
                     <span class="funda">Funda</span>
-                    <span class="md-body-2 funda-sub">Fragen und Antworten | {{ getRouteString() }}</span>
+                    <span class="md-body-2 funda-sub"
+                        >Fragen und Antworten | {{ getRouteString() }}</span
+                    >
                 </div>
                 <div class="col col-2">
                     <div class="timestamp">
@@ -82,7 +76,12 @@
                             {{ time }}
                         </span>
                     </div>
-                    <span class="welcome">Hallo Max M.</span>
+                    <span class="welcome"
+                        >Hallo
+                        {{
+                            `${currentUser.first_name} ${currentUser.last_name}`
+                        }}</span
+                    >
                 </div>
             </div>
             <router-view class="router-view" />

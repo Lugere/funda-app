@@ -1,6 +1,6 @@
 <template>
     <div id="login">
-        <md-card class="card login-card" v-if="!showLogin">
+        <md-card class="card login-card">
             <md-card-header class="card-header">
                 <div class="card-title">Anmelden</div>
             </md-card-header>

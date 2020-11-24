@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from '@/mixins/getterMixin';
+import getterMixin from "@/mixins/getterMixin";
 
 @Component({
     computed: {
@@ -57,7 +57,9 @@ export default class Subjects extends getterMixin {
     public searchByEntry(items, term): any {
         if (!term) return items;
         const toLower = text => text.toString().toLowerCase();
-        return items.filter(item => toLower(item.title).includes(toLower(term)));
+        return items.filter(item =>
+            toLower(item.title).includes(toLower(term))
+        );
     }
 
     public searchOnTable(): void {
@@ -84,11 +86,23 @@ export default class Subjects extends getterMixin {
 
     public deleteSubjects(): void {
         for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.subjects.findIndex(x => x.subject_id == this.selected[i].subject_id);
-            if (this.entries.find(x => x.subject_id == this.subjects[pos].subject_id)) {
+            let pos = this.subjects.findIndex(
+                x => x.subject_id == this.selected[i].subject_id
+            );
+            if (
+                this.entries.find(
+                    x => x.subject_id == this.subjects[pos].subject_id
+                )
+            ) {
                 alert("Es gibt Fragen die dieser Kategorie angehören!");
                 return;
-            } else this.subjects.splice(pos, 1);
+            } else {
+                store.dispatch("deleteEntry", {
+                    id: this.subjects[pos].entryId,
+                    tableName: "subjects",
+                    columnName: "subject_id",
+                });
+            }
         }
     }
 
@@ -101,7 +115,10 @@ export default class Subjects extends getterMixin {
 
     public onNewSubject(): void {
         // Create new Subject
-        store.dispatch("createSubject", this.newSubject);
+        store.dispatch("createSubject", {
+            data: this.newSubject,
+            tableName: "subjects",
+        });
         // Hide Dialog
         this.showNewSubject = false;
         this.newSubject = this.resetNewSubject;

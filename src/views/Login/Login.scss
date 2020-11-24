@@ -1,5 +1,7 @@
 @import "utilities/_variables.scss";
 
+
+
 #login {
     display: flex;
     align-items: center;
@@ -8,7 +10,7 @@
 
     .card {
         position: absolute;
-        background-color: $darkblue;
+        background-color: $white;
         width: 300px;
         padding: 0 !important;
         top: 50%;
