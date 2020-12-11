@@ -6,7 +6,7 @@ import mainEventBus from "@/components/mainEventBus";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    state: () => ({
+    state: {
         entries: [],
         subjects: [],
         users: [],
@@ -14,8 +14,8 @@ const store = new Vuex.Store({
         quizzes: [],
         quiz_entries: [],
         subject: 0,
-        currentUser: {}
-    }),
+        currentUser: {},
+    },
     mutations: {
         setUser(state, val) {
             state.currentUser = val;
@@ -124,7 +124,7 @@ const store = new Vuex.Store({
                         tableName: tableName,
                     })
                 )
-                .then(() => dispatch("fetchAll"))
+                .then(response => console.log(response.data))
                 .catch(e => console.error(`Error creating entry: ${e}`));
         },
 
@@ -153,7 +153,7 @@ const store = new Vuex.Store({
                         entry: data,
                     })
                 )
-                .then(response => console.log(response.data))
+                .then(() => dispatch("fetchAll"))
                 .catch(e => console.error(`Error deleting entry: ${e}`));
         },
     },

@@ -115,7 +115,7 @@ export default class Subjects extends getterMixin {
 
     public onNewSubject(): void {
         // Create new Subject
-        store.dispatch("createSubject", {
+        store.dispatch("createEntry", {
             data: this.newSubject,
             tableName: "subjects",
         });

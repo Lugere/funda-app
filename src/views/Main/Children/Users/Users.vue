@@ -70,7 +70,7 @@
           {{ item.email }}
         </md-table-cell>
         <md-table-cell md-sort-by="role" md-label="Rolle">
-          {{ item.role }}
+          {{ getUserRole(item.user_id) }}
         </md-table-cell>
         <md-table-cell md-sort-by="createdAt" md-label="Erstellt am">
           {{ item.created_at | formatDate }}

@@ -33,7 +33,7 @@ export default class Entries extends getterMixin {
     public subjects!: any;
     public users!: any;
     public comments!: any;
-    public subject!: number;
+    public subject!: any;
 
     /* Data */
     // Subject Select
@@ -52,6 +52,7 @@ export default class Entries extends getterMixin {
         question: "",
         answer: "",
         hint: "",
+        user_id: 1,
         created_at: moment().unix(),
     };
     public isUpdate = false;
@@ -130,6 +131,7 @@ export default class Entries extends getterMixin {
 
     public onNewEntry(): void {
         // Create new entry
+        console.log("onNewEntry");
         this.newEntry.created_at = moment().unix();
         store.dispatch("createEntry", {
             data: this.newEntry,
@@ -143,7 +145,7 @@ export default class Entries extends getterMixin {
         this.isUpdate = false;
         this.showEntry = true;
         this.showEntryIndex = this.entries.findIndex(
-            x => x.entry_id == entry_id
+            entry => entry.entry_id == entry_id
         );
         this.shownEntry = this.entries[this.showEntryIndex];
     }
@@ -184,16 +186,15 @@ export default class Entries extends getterMixin {
     }
 
     public onUpdateEntry(): void {
-        this.newEntry.created_at = moment().unix();
         this.newEntry.entry_id = this.selected[0].entry_id;
         store.dispatch("updateEntry", {
             data: this.newEntry,
             tableName: "entries",
         });
+        this.showNewEntry = false;
     }
 
     /* Getters */
-
     get entryComments() {
         return this.comments.filter(
             x => x.entry_id == this.shownEntry.entry_id
@@ -220,6 +221,6 @@ export default class Entries extends getterMixin {
             this.users = store.state.users;
             this.comments = store.state.comments;
             this.subject = store.state.subject;
-        })
+        });
     }
 }
