@@ -3,7 +3,7 @@
         <md-toolbar class="toolbar">
             <div class="col-1">
                 <span class="title">Quizkatalog</span>
-                <md-button class="md-raised md-primary">Quiz erstellen</md-button>
+                <md-button class="md-raised md-primary" @click="onCreateQuiz()">Quiz erstellen</md-button>
             </div>
             <div class="col-2">
                 <md-field class="search">
@@ -81,6 +81,15 @@
                 </md-card-expand>
             </md-card>
         </div>
+        <md-empty-state
+            v-if="!quizzes"
+            class="quiz-empty-state"
+            md-rounded
+            md-label="Gähnende Leere"
+            md-description="Keine Quizze gefunden"
+        >
+            <md-button class="md-primary md-raised" @click="onCreateQuiz()">Quiz erstellen</md-button>
+        </md-empty-state>
         <md-card v-if="!quizzes">
             <md-empty-state md-label="Gähnende Leere" md-description="Kein Quiz gefunden">
                 <md-button class="md-primary md-raised">Quiz erstellen</md-button>

@@ -3,6 +3,7 @@ import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
 import getterMixin from "@/mixins/getterMixin";
+import { Message } from "element-ui";
 
 @Component({
     computed: {
@@ -57,9 +58,7 @@ export default class Subjects extends getterMixin {
     public searchByEntry(items, term): any {
         if (!term) return items;
         const toLower = text => text.toString().toLowerCase();
-        return items.filter(item =>
-            toLower(item.title).includes(toLower(term))
-        );
+        return items.filter(item => toLower(item.title).includes(toLower(term)));
     }
 
     public searchOnTable(): void {
@@ -86,19 +85,14 @@ export default class Subjects extends getterMixin {
 
     public deleteSubjects(): void {
         for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.subjects.findIndex(
-                x => x.subject_id == this.selected[i].subject_id
-            );
-            if (
-                this.entries.find(
-                    x => x.subject_id == this.subjects[pos].subject_id
-                )
-            ) {
-                alert("Es gibt Fragen die dieser Kategorie angehören!");
-                return;
+            let pos = this.subjects.findIndex(x => x.subject_id == this.selected[i].subject_id);
+            if (this.entries.find(x => x.subject_id == this.subjects[pos].subject_id)) {
+                Message.error(
+                    "Diese Kategorie kann nicht gelöscht werden. Es gibt Fragen die dieser Kategorie angehören!"
+                );
             } else {
                 store.dispatch("deleteEntry", {
-                    id: this.subjects[pos].entryId,
+                    id: this.subjects[pos].subject_id,
                     tableName: "subjects",
                     columnName: "subject_id",
                 });
@@ -129,8 +123,13 @@ export default class Subjects extends getterMixin {
         this.$router.push("/Entries");
     }
 
-    /* Lifecycle hooks */
+    /* Watchers */
+    @Watch("subjects", { immediate: true, deep: true })
+    public handler() {
+        this.searchOnTable();
+    }
 
+    /* Lifecycle hooks */
     public mounted() {
         this.searchOnTable();
         this.selected = [];

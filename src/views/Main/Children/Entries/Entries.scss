@@ -41,6 +41,24 @@
             .role {
                 font-family: "Roboto Bold";
                 margin-right: 1em;
+                color: $white !important;
+                padding: 1px;
+                border-radius: 3px;
+                text-align: center;
+                display: inline-block;
+                width: 30px !important;
+
+                &.admin {
+                    background-color: $darkblue;
+                }
+
+                &.student {
+                    background-color: $darkgreen;
+                }
+                
+                &.teacher {
+                    background-color: $orange;
+                }
             }
         }
     }
@@ -50,6 +68,13 @@
 .entry-dialog {
     .md-dialog-container {
         min-width: 600px !important;
+
+        .dialog-menu {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            margin: 0;
+        }
     }
 }
 
@@ -86,4 +111,8 @@
             }
         }
     }
+}
+
+.comment-menu-content {
+    z-index: 100 !important;
 }

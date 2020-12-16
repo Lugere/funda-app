@@ -1,4 +1,4 @@
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { mixins } from "vue-class-component";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
@@ -61,17 +61,20 @@ export default class Quizzes extends getterMixin {
 
     public getQuizSubjects(quiz_id): string {
         let subjects = "";
-        const getsubject_id = quiz_entry => {
+        const getSubject_id = quiz_entry => {
             return this.entries[quiz_entry.entry_id - 1].subject_id;
         };
-        let _quiz_entries = this.quiz_entries.filter(x => x.quiz_id == quiz_id);
+        let _quiz_entries = this.quiz_entries.filter(quiz_entry => quiz_entry.quiz_id == quiz_id);
         _quiz_entries.forEach(quiz_entry => {
-            let subject = `${this.getSubject(getsubject_id(quiz_entry))}, `;
-            // Make sure that there are no duplicates
+            let subject = `${this.getSubject(getSubject_id(quiz_entry))}, `;
             if (!subjects.includes(subject)) subjects += subject;
         });
         // Remove last comma from string
         return subjects.substring(0, subjects.length - 2);
+    }
+
+    public onCreateQuiz() {
+        return;
     }
 
     public onStartQuiz(quiz_id) {
@@ -89,11 +92,6 @@ export default class Quizzes extends getterMixin {
         this.selfEvaluation = "";
         this.answer = "";
     }
-
-    // public onPreviousQuestion() {
-    //     this.currentQuestion--;
-    //     this.showAnswer = false
-    // }
 
     public onNextQuestion() {
         this.currentQuestion++;
@@ -120,7 +118,15 @@ export default class Quizzes extends getterMixin {
         return this.entries.find(x => x.entry_id == entry[this.currentQuestion].entry_id).answer;
     }
 
+    /* Watchers */
+    @Watch("quizzes", { immediate: true, deep: true })
+    public handler() {
+        this.searchOnTable();
+    }
+
+    /* Lifecycle hooks */
     mounted() {
         this.searchOnTable();
+        console.log(this.quiz_entries);
     }
 }

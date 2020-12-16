@@ -14,7 +14,7 @@ const store = new Vuex.Store({
         quizzes: [],
         quiz_entries: [],
         subject: 0,
-        currentUser: {},
+        currentUser: { first_name: "Max", last_name: "Mustermann" },
     },
     mutations: {
         setUser(state, val) {
@@ -22,7 +22,6 @@ const store = new Vuex.Store({
         },
         setEntries(state, val) {
             state.entries = val;
-            state.subject = 0;
         },
         setSubjects(state, val) {
             state.subjects = val;
@@ -100,9 +99,7 @@ const store = new Vuex.Store({
                 .then(async response => commit("setQuizzes", response.data))
                 .catch(e => console.error(`Error fetching quizzes: ${e}`));
             await Vue.axios
-                .get(
-                    "http://localhost/api/fetchEntries.php?tableName=quiz_entries"
-                )
+                .get("http://localhost/api/fetchEntries.php?tableName=quiz_entries")
                 .then(async response => commit("setQuizEntries", response.data))
                 .catch(e => console.error(`Error fetching quiz_entries: ${e}`));
         },
@@ -121,10 +118,10 @@ const store = new Vuex.Store({
                     "http://localhost/api/createEntry.php",
                     JSON.stringify({
                         entry: data,
-                        tableName: tableName,
+                        tableName,
                     })
                 )
-                .then(response => console.log(response.data))
+                .then(() => dispatch("fetchAll"))
                 .catch(e => console.error(`Error creating entry: ${e}`));
         },
 
@@ -134,9 +131,9 @@ const store = new Vuex.Store({
                 .post(
                     "http://localhost/api/deleteEntry.php",
                     JSON.stringify({
-                        id: id,
-                        tableName: tableName,
-                        columnName: columnName,
+                        id,
+                        tableName,
+                        columnName,
                     })
                 )
                 .then(() => dispatch("fetchAll"))
@@ -149,7 +146,8 @@ const store = new Vuex.Store({
                 .post(
                     "http://localhost/api/updateEntry.php",
                     JSON.stringify({
-                        tableName: tableName,
+                        id,
+                        tableName,
                         entry: data,
                     })
                 )

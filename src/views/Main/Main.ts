@@ -43,6 +43,7 @@ export default class Main extends getterMixin {
     public getTime(): string {
         let hours = new Date().getHours();
         let minutes = new Date().getMinutes();
+        let seconds = new Date().getSeconds();
         return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
     }
 
@@ -53,7 +54,7 @@ export default class Main extends getterMixin {
         setInterval(() => {
             this.date = this.getDate();
             this.time = this.getTime();
-        }, 60000);
+        }, 1000);
     }
 
     public checkRoute(route): boolean {

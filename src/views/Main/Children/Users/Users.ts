@@ -125,8 +125,13 @@ export default class Users extends getterMixin {
         this.selected = items;
     }
 
-    /* Lifecycle hooks */
+    /* Watchers */
+    @Watch("users", { immediate: true, deep: true })
+    public handler() {
+        this.searchOnTable();
+    }
 
+    /* Lifecycle hooks */
     public mounted() {
         this.selected = [];
         this.searchOnTable();

@@ -47,6 +47,15 @@
             }
         }
     }
+
+    .quiz-empty-state {
+        color: $white;
+
+        .md-empty-state-container {
+            background-color: $transparent_white;
+            border-radius: 50%;
+        }
+    }
 }
 
 .quiz-dialog {

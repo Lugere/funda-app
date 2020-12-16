@@ -39,6 +39,24 @@
             .role {
                 font-family: "Roboto Bold";
                 margin-right: 1em;
+                color: $white !important;
+                padding: 1px;
+                border-radius: 3px;
+                text-align: center;
+                display: inline-block;
+                width: 30px !important;
+
+                &.admin {
+                    background-color: $darkblue;
+                }
+
+                &.student {
+                    background-color: $darkgreen;
+                }
+                
+                &.teacher {
+                    background-color: $orange;
+                }
             }
 
             .entry-count {

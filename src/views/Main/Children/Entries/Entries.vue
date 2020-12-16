@@ -6,6 +6,7 @@
             class="table"
             md-card
             md-fixed-header
+            md-sort-order="desc"
             md-height="737px"
             md-sort="created_at"
             v-model="searched"
@@ -29,9 +30,7 @@
                             </md-option>
                         </md-select>
                     </md-field>
-                    <md-button
-                        @click="showNewEntry = true"
-                        class="md-primary add-entry-btn md-raised"
+                    <md-button @click="onShowNewEntry()" class="md-primary add-entry-btn md-raised"
                         >frage hinzufügen</md-button
                     >
                 </div>
@@ -46,19 +45,19 @@
                 </div>
             </md-table-toolbar>
             <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-                <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+                <div class="md-toolbar-section-start">
+                    {{ getAlternateLabel(count) }}
 
+                    <a class="unselect-all-button" @click="onClearSelection()">Alle abwählen</a>
+                </div>
                 <div class="md-toolbar-section-end">
-                    <md-button :disabled="selected.length !== 1" class="md-icon-button" @click="onShowUpdate()">
-                        <md-icon>create</md-icon>
-                    </md-button>
-                    <md-button class="md-icon-button" @click="deleteEntries()">
+                    <md-button class="md-icon-button" @click="onDeleteEntries()">
                         <md-icon>delete</md-icon>
                     </md-button>
                 </div>
             </md-table-toolbar>
             <md-table-empty-state md-label="Gähnende Leere" md-description="Keine Fragen gefunden">
-                <md-button class="md-primary md-raised" @click="showNewEntry = true"
+                <md-button class="md-primary md-raised" @click="onShowNewEntry()"
                     >frage hinzufügen</md-button
                 >
             </md-table-empty-state>
@@ -88,10 +87,13 @@
                 </md-table-cell>
                 <!-- User -->
                 <md-table-cell md-sort-by="user_id" md-label="Erstellt von">
-                    <span class="role">
+                    <div
+                        :class="users.find(user => user.user_id == item.user_id).role"
+                        class="role"
+                    >
                         {{ getUserRoleLetter(item.user_id) }}
                         <md-tooltip md-delay="600">{{ getUserRole(item.user_id) }}</md-tooltip>
-                    </span>
+                    </div>
                     {{ getUser(item.user_id) }}
                 </md-table-cell>
                 <!-- Date -->
@@ -131,8 +133,10 @@
                     </md-field>
                 </form>
                 <md-dialog-actions>
-                    <md-button class="md-accent" @click="onAbortNewEntry()">Abbrechen</md-button>
-                    <md-button class="md-primary md-raised" @click="isUpdate ? onUpdateEntry() : onNewEntry()"
+                    <md-button class="md-accent" @click="isUpdate ? onAbortUpdate() : onAbortNewEntry()">Abbrechen</md-button>
+                    <md-button
+                        class="md-primary md-raised"
+                        @click="isUpdate ? onUpdateEntry() : onNewEntry()"
                         >Speichern</md-button
                     >
                 </md-dialog-actions>
@@ -141,6 +145,23 @@
         <!-- Show Entry Dialog -->
         <md-dialog class="entry-dialog" :md-active.sync="showEntry">
             <md-dialog-title class="title">{{ shownEntry.question }}</md-dialog-title>
+            <md-menu class="dialog-menu" md-size="auto" md-direction="bottom-end">
+                <md-button class="md-icon-button" md-menu-trigger>
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+
+                <md-menu-content class="comment-menu-content">
+                    <md-menu-item @click="onShowUpdate()">
+                        <md-icon>create</md-icon>
+                        <span>Bearbeiten</span>
+                    </md-menu-item>
+
+                    <md-menu-item @click="onDeleteEntry()">
+                        <md-icon>delete</md-icon>
+                        <span>Löschen</span>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
             <span class="subtitle">
                 <span class="md-caption">
                     erstellt von
@@ -164,7 +185,7 @@
                 <br />
                 <div class="field">
                     <span class="md-caption">Antworthinweis</span>
-                    <p class="md-body-2">{{ shownEntry.hint }}</p>
+                    <p class="md-body-2">{{ shownEntry.hint | checkLength }}</p>
                 </div>
             </md-dialog-content>
             <md-divider class="md-inset" />
@@ -196,7 +217,10 @@
                     </div>
                     <md-list class="comments">
                         <md-content class="md-scrollbar">
-                            <md-list-item v-for="comment in entryComments" :key="comment.comment_id">
+                            <md-list-item
+                                v-for="comment in entryComments"
+                                :key="comment.comment_id"
+                            >
                                 <div class="comment">
                                     <div class="top-line">
                                         <span class="md-body-2 username">{{
@@ -213,13 +237,27 @@
                                         {{ comment.content }}
                                     </p>
                                 </div>
-                                <md-button
+                                <md-menu
                                     v-if="comment.user_id == 3"
-                                    class="md-icon-button md-accent"
-                                    @click="onDeleteComment(comment.comment_id)"
+                                    md-size="auto"
+                                    md-direction="bottom-end"
                                 >
-                                    <md-icon>delete</md-icon>
-                                </md-button>
+                                    <md-button class="md-icon-button" md-menu-trigger>
+                                        <md-icon>more_vert</md-icon>
+                                    </md-button>
+
+                                    <md-menu-content class="comment-menu-content">
+                                        <md-menu-item>
+                                            <md-icon>create</md-icon>
+                                            <span>Bearbeiten</span>
+                                        </md-menu-item>
+
+                                        <md-menu-item @click="onDeleteComment(comment.comment_id)">
+                                            <md-icon>delete</md-icon>
+                                            <span>Löschen</span>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
                             </md-list-item>
                         </md-content>
                     </md-list>
