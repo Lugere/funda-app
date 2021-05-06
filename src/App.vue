@@ -1,5 +1,11 @@
 <template>
     <div id="app">
+        <div class="loading-spinner" v-if="isLoading">
+            <div class="spinner-wrapper">
+                <md-progress-spinner class="md-primary" md-mode="indeterminate" />
+                <span>{{ loadingSplash }}</span>
+            </div>
+        </div>
         <router-view />
     </div>
 </template>
@@ -7,10 +13,19 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import moment from "moment";
-import getterMixin from './mixins/getterMixin';
+import GetterMixin from "./mixins/GetterMixin";
+import store from "@/store";
+import { mapState } from "vuex";
 
-@Component
-export default class App extends getterMixin {
+@Component({
+    computed: {
+        ...mapState(["isLoading", "loadingSplash"]),
+    },
+})
+export default class App extends GetterMixin {
+    public isLoading!: boolean;
+    public loadingSplash!: string;
+
     mounted() {
         moment.locale("de");
     }
@@ -48,18 +63,50 @@ a:visited {
     text-decoration: none !important;
 }
 
+.md-success {
+    color: $lightblue !important;
+
+    &.md-raised {
+        background-color: $lightblue !important;
+        color: $white !important;
+    }
+}
+
 #app {
-    background-image: url("assets/img/bg2.png");
+    background-attachment: fixed;
+    background-image: url("assets/img/bg.png");
     background-position: bottom center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed;
+    font-family: "Roboto";
     height: 100vh;
     width: 100vw;
-    font-family: "Roboto";
 
     .md-dialog .md-dialog-container {
         min-width: 768px !important;
+    }
+
+    .loading-spinner {
+        backdrop-filter: blur(10px);
+        background-color: $transparent_darkblue;
+        display: grid;
+        height: 100vh;
+        place-items: center;
+        position: absolute;
+        width: 100vw;
+        z-index: 9999;
+
+        .spinner-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            span {
+                color: $white;
+                margin-top: 1em;
+                font-size: 16pt;
+            }
+        }
     }
 }
 /*

@@ -3,7 +3,7 @@ import { mixins } from "vue-class-component";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from "@/mixins/getterMixin";
+import GetterMixin from "@/mixins/GetterMixin";
 
 @Component({
     filters: {
@@ -27,7 +27,7 @@ import getterMixin from "@/mixins/getterMixin";
         ...mapState(["quizzes", "quiz_entries", "users", "entries", "subjects"]),
     },
 })
-export default class Quizzes extends getterMixin {
+export default class Quizzes extends GetterMixin {
     public quizzes!: any;
     public quiz_entries!: any;
     public users!: any;
@@ -64,7 +64,7 @@ export default class Quizzes extends getterMixin {
         const getSubject_id = quiz_entry => {
             return this.entries[quiz_entry.entry_id - 1].subject_id;
         };
-        let _quiz_entries = this.quiz_entries.filter(quiz_entry => quiz_entry.quiz_id == quiz_id);
+        let _quiz_entries = this.quiz_entries.filter(quiz_entry => quiz_entry.quiz_id === quiz_id);
         _quiz_entries.forEach(quiz_entry => {
             let subject = `${this.getSubject(getSubject_id(quiz_entry))}, `;
             if (!subjects.includes(subject)) subjects += subject;
@@ -78,7 +78,7 @@ export default class Quizzes extends getterMixin {
     }
 
     public onStartQuiz(quiz_id) {
-        this.shownQuiz = this.quizzes.find(x => x.quiz_id == quiz_id);
+        this.shownQuiz = this.quizzes.find(quiz => quiz.quiz_id === quiz_id);
         this.showQuiz = true;
         this.showAnswer = false;
         this.currentQuestion = 0;
@@ -103,19 +103,19 @@ export default class Quizzes extends getterMixin {
     public get quizLength() {
         let length = 0;
         this.quiz_entries.forEach(entry => {
-            if (entry.quiz_id == this.shownQuiz.quiz_id) length++;
+            if (entry.quiz_id === this.shownQuiz.quiz_id) length++;
         });
         return length;
     }
 
     public get quizQuestion() {
-        let entry = this.quiz_entries.filter(x => x.quiz_id == this.shownQuiz.quiz_id);
-        return this.entries.find(x => x.entry_id == entry[this.currentQuestion].entry_id).question;
+        let entry = this.quiz_entries.filter(entry => entry.quiz_id === this.shownQuiz.quiz_id);
+        return this.entries.find(_entry => _entry.entry_id === entry[this.currentQuestion].entry_id).question;
     }
 
     public get quizAnswer() {
-        let entry = this.quiz_entries.filter(x => x.quiz_id == this.shownQuiz.quiz_id);
-        return this.entries.find(x => x.entry_id == entry[this.currentQuestion].entry_id).answer;
+        let entry = this.quiz_entries.filter(quiz_entry => quiz_entry.quiz_id === this.shownQuiz.quiz_id);
+        return this.entries.find(_entry => _entry.entry_id === entry[this.currentQuestion].entry_id).answer;
     }
 
     /* Watchers */
@@ -125,8 +125,7 @@ export default class Quizzes extends getterMixin {
     }
 
     /* Lifecycle hooks */
-    mounted() {
+    public mounted() {
         this.searchOnTable();
-        console.log(this.quiz_entries);
     }
 }

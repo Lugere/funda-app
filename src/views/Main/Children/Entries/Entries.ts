@@ -2,11 +2,11 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from "@/mixins/getterMixin";
+import GetterMixin from "@/mixins/GetterMixin";
 
 @Component({
     computed: {
-        ...mapState(["entries", "subjects", "users", "comments", "subject"]),
+        ...mapState(["entries", "subjects", "users", "comments", "subject", "currentUser"]),
     },
     filters: {
         checkLength(value: any): string {
@@ -30,17 +30,18 @@ import getterMixin from "@/mixins/getterMixin";
         },
     },
 })
-export default class Entries extends getterMixin {
+export default class Entries extends GetterMixin {
     /* Store Bindings */
     public entries!: any;
     public subjects!: any;
     public users!: any;
     public comments!: any;
     public subject!: any;
+    public currentUser!: any;
 
     /* Data */
     // Subject Select
-    currentSubject = 0;
+    public currentSubject = 0;
 
     // Table Search
     public search = "";
@@ -88,8 +89,8 @@ export default class Entries extends getterMixin {
     }
 
     public searchBySubject(items) {
-        if (this.currentSubject == 0) return items;
-        return (this.searched = this.searched.filter(x => x.subject_id == this.currentSubject));
+        if (this.currentSubject === 0) return items;
+        return (this.searched = this.searched.filter(entry => entry.subject_id === this.currentSubject));
     }
 
     public searchOnTable(): void {
@@ -99,7 +100,7 @@ export default class Entries extends getterMixin {
     }
 
     public getAlternateLabel(count): string {
-        return `${count == this.entries.length ? "Alle" : count} Frage${
+        return `${count === this.entries.length ? "Alle" : count} Frage${
             count > 1 ? "n" : ""
         } ausgwählt`;
     }
@@ -109,20 +110,18 @@ export default class Entries extends getterMixin {
     }
 
     public onClearSelection(): void {
-        console.log(this.selected);
         this.selected = [];
-        console.log(this.selected);
     }
 
     public onDeleteEntries(): void {
-        this.selected.forEach(selected => {
-            let pos = this.entries.findIndex(entry => entry.entry_id == selected.entry_id);
+        for (const selected of this.selected) {
+            let pos = this.entries.findIndex(entry => entry.entry_id === selected.entry_id);
             store.dispatch("deleteEntry", {
                 id: this.entries[pos].entry_id,
                 tableName: "entries",
                 columnName: "entry_id",
             });
-        });
+        }
     }
 
     public onDeleteEntry(): void {
@@ -150,7 +149,6 @@ export default class Entries extends getterMixin {
 
     public onNewEntry(): void {
         // Create new entry
-        console.log("onNewEntry");
         this.newEntry.created_at = moment().unix();
         if (this.currentSubject > 0) this.newEntry.subject_id = `${this.currentSubject}`;
         store.dispatch("createEntry", {
@@ -164,7 +162,7 @@ export default class Entries extends getterMixin {
     public onShowEntry(entry_id): void {
         this.isUpdate = false;
         this.showEntry = true;
-        this.showEntryIndex = this.entries.findIndex(entry => entry.entry_id == entry_id);
+        this.showEntryIndex = this.entries.findIndex(entry => entry.entry_id === entry_id);
         this.shownEntry = this.entries[this.showEntryIndex];
     }
 
@@ -176,7 +174,7 @@ export default class Entries extends getterMixin {
     public onNewComment(): void {
         this.newComment.created_at = moment().unix();
         this.newComment.entry_id = this.shownEntry.entry_id;
-        this.newComment.user_id = 3;
+        this.newComment.user_id = this.currentUser.user_id;
         store.dispatch("createEntry", {
             data: this.newComment,
             tableName: "comments",
@@ -186,7 +184,7 @@ export default class Entries extends getterMixin {
     }
 
     public onDeleteComment(comment_id): void {
-        let pos = this.comments.findIndex(x => x.comment_id == comment_id);
+        let pos = this.comments.findIndex(comment => comment.comment_id === comment_id);
         store.dispatch("deleteEntry", {
             id: this.comments[pos].comment_id,
             tableName: "comments",
@@ -220,7 +218,7 @@ export default class Entries extends getterMixin {
         });
         this.showNewEntry = false;
     }
-    
+
     public onAbortUpdate(): void {
         this.showNewEntry = false;
         this.showEntry = true;
@@ -234,15 +232,14 @@ export default class Entries extends getterMixin {
 
     /* Getters */
     get entryComments() {
-        return this.comments.filter(x => x.entry_id == this.shownEntry.entry_id);
+        return this.comments.filter(comment => comment.entry_id === this.shownEntry.entry_id);
     }
 
     get commentsCount() {
-        let count = this.comments.filter(x => x.entry_id == this.shownEntry.entry_id).length;
+        let count = this.comments.filter(comment => comment.entry_id === this.shownEntry.entry_id).length;
         if (count > 0) return `${count} Kommentar${count > 1 ? "e" : ""}`;
         return "Keine Kommentare";
     }
-
     /* Lifecycle hooks */
     public mounted() {
         this.selected = [];

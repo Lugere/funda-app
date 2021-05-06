@@ -3,7 +3,7 @@ import store from "@/store";
 
 @Component
 export default class Home extends Vue {
-    mounted() {
+    public mounted() {
         document.title = "FUNDA - Fragen & Antworten | Home";
     }
 }

@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from "@/mixins/getterMixin";
+import GetterMixin from "@/mixins/GetterMixin";
 
 @Component({
     computed: {
@@ -26,28 +26,19 @@ import getterMixin from "@/mixins/getterMixin";
         },
     },
 })
-export default class Users extends getterMixin {
+export default class Users extends GetterMixin {
     /* Store Bindings */
     public users!: any;
-
-    /* Data */
-    // Subject Select
-    currentSubject = 0;
 
     // Table Search
     public search = "";
     public searched: any = [];
 
     // Table Item Select
-    public selected = [
-        {
-            userId: 0,
-        },
-    ];
+    public selected: any = [];
     public showNewUser = false;
     public newUser = {
-        user_id: 0,
-        createdAt: moment().unix(),
+        created_at: moment().unix(),
         first_name: "",
         last_name: "",
         email: "",
@@ -69,9 +60,7 @@ export default class Users extends getterMixin {
     public searchByUser(items, term): any {
         if (!term) return items;
         const toLower = text => text.toString().toLowerCase();
-        return items.filter(item =>
-            toLower(item.username).includes(toLower(term))
-        );
+        return items.filter(item => toLower(item.username).includes(toLower(term)));
     }
 
     public searchOnTable(): void {
@@ -79,17 +68,17 @@ export default class Users extends getterMixin {
     }
 
     public getAlternateLabel(count): string {
-        return `${
-            count == this.users.length ? "Alle" : count
-        } Benuter ausgwählt`;
+        return `${count === this.users.length ? "Alle" : count} Benutzer ausgwählt`;
     }
 
     public deleteUsers(): void {
-        for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.users.findIndex(
-                x => x.userId == this.selected[i].userId
-            );
-            this.users.splice(pos, 1);
+        for (const selected of this.selected) {
+            let pos = this.users.findIndex(user => user.user_id === selected.user_id);
+            store.dispatch("deleteEntry", {
+                id: this.users[pos].user_id,
+                tableName: "users",
+                columnName: "user_id",
+            });
         }
     }
 
@@ -104,25 +93,68 @@ export default class Users extends getterMixin {
         this.newUser.username = "";
     }
 
-    public onNewUser(): void {
+    public onShwoNewUser(): void {
+        this.onGeneratePassword();
+        this.showNewUser = true;
+    }
+
+    public onCreateNewUser(): void {
         // Create new user
-        this.newUser.createdAt = moment().unix();
-        this.newUser.user_id = this.users.length + 1;
-        store.dispatch("createUser", this.newUser);
+        this.newUser.username = this.username;
+        this.newUser.created_at = moment().unix();
+        store.dispatch("createEntry", {
+            data: this.newUser,
+            tableName: "users",
+        });
+        console.log(this.newUser);
         // Reset Dialog
         this.onAbortNewUser();
     }
 
     public onShowUser(user_id): void {
         this.showUser = true;
-        this.showUserIndex = this.users.findIndex(
-            user => user.user_id == user_id
-        );
+        this.showUserIndex = this.users.findIndex(user => user.user_id === user_id);
         this.shownUser = this.entries[this.showUserIndex];
+    }
+
+    public onGeneratePassword(): void {
+        let randString = "";
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+
+        for (let i = 0; i < 8; i++) {
+            randString += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        this.newUser.password = randString;
     }
 
     public onSelect(items): void {
         this.selected = items;
+    }
+
+    /* Getters */
+    public classs = "";
+
+    get username() {
+        let username = "";
+        username += `${this.newUser.first_name.substr(0, 5)}${this.newUser.last_name.substr(
+            0,
+            1,
+        )}`.toLowerCase();
+        if (this.newUser.first_name) {
+            switch (this.newUser.role) {
+                case 1:
+                    username += "-admin";
+                    break;
+                case 2:
+                    username += `-${this.classs}`;
+                    break;
+                case 3:
+                    username += "-teacher";
+                    break;
+            }
+        }
+        return username;
     }
 
     /* Watchers */

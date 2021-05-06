@@ -1,94 +1,116 @@
-@import "utilities/_variables.scss";
-
-
-
 #login {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     align-items: center;
     position: relative;
     height: 100vh;
 
-    .card {
-        position: absolute;
-        background-color: $white;
-        width: 300px;
-        padding: 0 !important;
-        top: 50%;
-        left: 25%;
-        transform: translate(-50%, -50%);
+    .login-card-container {
+        justify-self: center;
 
-        .md-card-header + .md-card-content {
-            padding-top: 0 !important;
+        .login-card {
+            background-color: $white;
+            width: 300px;
+            padding: 0 !important;
+
+            .md-card-header + .md-card-content {
+                padding-top: 0 !important;
+            }
+
+            &.login-card {
+                .card-header {
+                    .card-title {
+                        font-size: 32pt;
+                        text-align: center;
+                        padding: 1em 0;
+                        color: #ed4d1d;
+                        font-family: "Roboto Slab Bold", serif;
+                    }
+                }
+
+                .card-content {
+                    .remember-me, .md-checkbox {
+                        margin: 0 !important;
+                    }
+                }
+
+                .card-actions {
+                    padding: 0 16px 16px !important;
+                    display: flex;
+                    flex-direction: column;
+
+                    .login-btn {
+                        width: 100%;
+                    }
+
+                    .forgot-pass {
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+
+    .funda-container {
+        justify-self: center;
+        background-color: $darkblue;
+        height: 200px;
+        width: 600px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            height: 70px;
+            width: 70px;
+            transform: skew(45deg);
+            left: -15px;
+            top: 0;
+            background-color: $darkblue;
         }
 
-        &.login-card {
-            .card-header {
-                .card-title {
-                    font-size: 32pt;
-                    text-align: center;
-                    padding: 1em 0;
-                    color: #ed4d1d;
-                    font-family: "Roboto Slab Bold", serif;
-                }
-            }
-
-            .card-actions {
-                display: flex;
-                flex-direction: column;
-
-                .login-btn {
-                    width: 100%;
-                }
-
-                .social-btn {
-                    margin-left: 0;
-                    width: 100%;
-                }
-
-                .create-account {
-                    margin: 20px 0 4px 0;
-                    text-align: center;
-                }
-            }
+        .funda {
+            color: $white;
+            font-family: "Roboto Slab Black";
+            font-size: 100pt;
+            text-transform: uppercase;
+            user-select: none;
+            z-index: 1;
         }
 
-        &.sign-up-card {
-            .card-header {
-                margin-bottom: 30px;
-                padding: 0;
+        .answer-container {
+            background-color: $green;
+            border-radius: 15px;
+            bottom: -70px;
+            display: grid;
+            height: 100px;
+            place-items: center;
+            position: absolute;
+            right: -25px;
+            text-transform: uppercase;
+            user-select: none;
+            width: 200px;
 
-                .card-title {
-                    font-size: 32pt;
-                    text-align: center;
-                    padding: 1em 0;
-                    color: #ed4d1d;
-                    font-family: "Roboto Slab Bold", serif;
-                }
+            .answer {
+                color: $darkblue;
+                font-family: "Roboto Slab Black";
+                font-size: 60pt;
+                z-index: 1;
             }
 
-            .card-content {
-                a {
-                    margin-bottom: 20px !important;
-                }
-            }
-
-            .card-actions {
-                display: flex;
-                flex-direction: column;
-
-                .login-btn {
-                    width: 100%;
-                }
-
-                .social-btn {
-                    margin-left: 0;
-                    width: 100%;
-                }
-
-                .create-account {
-                    margin: 20px 0 4px 0;
-                    text-align: center;
-                }
+            &::after {
+                background-color: $green;
+                content: "";
+                height: 25px;
+                position: absolute;
+                right: -13px;
+                top: 0;
+                transform: skew(-45deg);
+                width: 50px;
+                z-index: 0;
             }
         }
     }
@@ -123,20 +145,5 @@
                 background-color: #a0ca16;
             }
         }
-    }
-
-    .funda {
-        position: absolute;
-        left: 60%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-transform: uppercase;
-        font-size: 100pt;
-        color: $white;
-        // -webkit-text-fill-color: $orange; /* Will override color (regardless of order) */
-        // -webkit-text-stroke-width: 8px;
-        // -webkit-text-stroke-color: $darkblue;
-        font-family: "Roboto Slab Black";
-        user-select: none;
     }
 }

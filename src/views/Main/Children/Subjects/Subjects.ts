@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
 import moment from "moment";
-import getterMixin from "@/mixins/getterMixin";
+import GetterMixin from "@/mixins/GetterMixin";
 import { Message } from "element-ui";
 
 @Component({
@@ -22,7 +22,7 @@ import { Message } from "element-ui";
         },
     },
 })
-export default class Subjects extends getterMixin {
+export default class Subjects extends GetterMixin {
     /* Store Bindings */
     public entries!: any;
     public subjects!: any;
@@ -66,7 +66,7 @@ export default class Subjects extends getterMixin {
     }
 
     public getAlternateLabel(count): string {
-        return `${count == this.subjects.length ? "Alle" : count} Kategorie${
+        return `${count === this.subjects.length ? "Alle" : count} Kategorie${
             count > 1 ? "n" : ""
         } ausgwählt`;
     }
@@ -78,17 +78,17 @@ export default class Subjects extends getterMixin {
     public getEntriesLength(subject_id): number {
         let count = 0;
         this.entries.forEach(entry => {
-            if (entry.subject_id == subject_id) count++;
+            if (entry.subject_id === subject_id) count++;
         });
         return count;
     }
 
     public deleteSubjects(): void {
-        for (let i = 0; i < this.selected.length; i++) {
-            let pos = this.subjects.findIndex(x => x.subject_id == this.selected[i].subject_id);
-            if (this.entries.find(x => x.subject_id == this.subjects[pos].subject_id)) {
+        for (const selected of this.selected) {
+            let pos = this.subjects.findIndex(subject => subject.subject_id === selected.subject_id);
+            if (this.entries.find(entry => entry.subject_id === this.subjects[pos].subject_id)) {
                 Message.error(
-                    "Diese Kategorie kann nicht gelöscht werden. Es gibt Fragen die dieser Kategorie angehören!"
+                    "Diese Kategorie kann nicht gelöscht werden. Es gibt Fragen die dieser Kategorie angehören!",
                 );
             } else {
                 store.dispatch("deleteEntry", {

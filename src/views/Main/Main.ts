@@ -2,7 +2,7 @@ import { Component, Vue } from "vue-property-decorator";
 import SiteNav from "@/components/SiteNav.vue";
 import Vuex, { mapState } from "vuex";
 import store from "@/store";
-import getterMixin from '@/mixins/getterMixin';
+import GetterMixin from "@/mixins/GetterMixin";
 
 @Component({
     components: {
@@ -12,7 +12,7 @@ import getterMixin from '@/mixins/getterMixin';
         ...mapState(["entries", "currentUser", "userState"]),
     },
 })
-export default class Main extends getterMixin {
+export default class Main extends GetterMixin {
     /* Data */
 
     public entries!: any;
@@ -25,8 +25,11 @@ export default class Main extends getterMixin {
 
     /* Methods */
 
-    public logout(): void {
-        store.dispatch("logout");
+    public async logout(): Promise<void> {
+        store.dispatch("updateLoadingSpinner", { isLoading: true, loadingSplash: "Abmelden..." });
+        await this.sleep(1000);
+        store.dispatch("logoutUser");
+        store.dispatch("updateLoadingSpinner", { isLoading: false, loadingSplash: "" });
     }
 
     public getDate(): string {
@@ -62,11 +65,15 @@ export default class Main extends getterMixin {
     }
 
     public changeRoute(route): void {
-        if (this.$router.currentRoute.fullPath != route) this.$router.push(route);
+        if (this.$router.currentRoute.fullPath !== route) this.$router.push(route);
+    }
+
+    /* Getters */
+    public get isAdmin(): boolean {
+        return this.currentUser.role === "admin";
     }
 
     /* Lifecycle hooks */
-
     public mounted() {
         store.dispatch("fetchAll");
         store.dispatch("fetchUser");

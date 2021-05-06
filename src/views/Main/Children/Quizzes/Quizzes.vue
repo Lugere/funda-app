@@ -21,7 +21,7 @@
                     <div class="md-title">{{ quiz.title }}</div>
                     <div>
                         <span class="md-body-2">
-                            {{ getUser(quiz.user_id) }}
+                            {{ getUser(quiz.user_id, "full") }}
                         </span>
                         <span class="md-caption">
                             {{ quiz.created_at | formatFromNowDate }}
@@ -137,7 +137,7 @@
                 <!-- <md-button class="md-raised" :disabled="currentQuestion < 1" @click="onPreviousQuestion()">Vorherige Frage</md-button> -->
                 <md-button
                     class="md-raised next-question-button"
-                    :disabled="currentQuestion + 1 == quizLength || selfEvaluation == ''"
+                    :disabled="currentQuestion + 1 === quizLength || selfEvaluation === ''"
                     @click="onNextQuestion()"
                     >Nächste Frage</md-button
                 >

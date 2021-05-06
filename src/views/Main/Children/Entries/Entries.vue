@@ -88,13 +88,13 @@
                 <!-- User -->
                 <md-table-cell md-sort-by="user_id" md-label="Erstellt von">
                     <div
-                        :class="users.find(user => user.user_id == item.user_id).role"
+                        :class="users.find(user => user.user_id === item.user_id).role"
                         class="role"
                     >
                         {{ getUserRoleLetter(item.user_id) }}
                         <md-tooltip md-delay="600">{{ getUserRole(item.user_id) }}</md-tooltip>
                     </div>
-                    {{ getUser(item.user_id) }}
+                    {{ getUser(item.user_id, "short") }}
                 </md-table-cell>
                 <!-- Date -->
                 <md-table-cell md-sort-by="created_at" md-label="Erstellt am">
@@ -166,7 +166,7 @@
                 <span class="md-caption">
                     erstellt von
                 </span>
-                <span class="md-body-2">{{ getUser(shownEntry.user_id) }}</span>
+                <span class="md-body-2">{{ getUser(shownEntry.user_id, "full") }}</span>
                 <span> • </span>
                 <span class="md-body-2">{{ shownEntry.created_at | formatDate }}</span>
             </span>
@@ -206,7 +206,7 @@
                             <md-button
                                 class="md-primary md-raised"
                                 @click="onNewComment()"
-                                :disabled="newComment.content == ''"
+                                :disabled="newComment.content === ''"
                             >
                                 Kommentieren
                             </md-button>
@@ -224,7 +224,7 @@
                                 <div class="comment">
                                     <div class="top-line">
                                         <span class="md-body-2 username">{{
-                                            getUser(comment.user_id)
+                                            getUser(comment.user_id, "full")
                                         }}</span>
                                         <span class="md-caption date">{{
                                             comment.created_at | formatCommentDate
@@ -238,7 +238,7 @@
                                     </p>
                                 </div>
                                 <md-menu
-                                    v-if="comment.user_id == 3"
+                                    v-if="comment.user_id === 3"
                                     md-size="auto"
                                     md-direction="bottom-end"
                                 >

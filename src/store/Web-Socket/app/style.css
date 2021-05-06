@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+:root {
+    --primary: #448aff;
+    --primary-hover: #5b8fe9;
+    --primary-active: #2669dd;
+    --accent: #ff5252;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    font-family: "Roboto";
+}
+
+section {
+    padding: 1em;
+    /* max-height: 90%; */
+    border: 1px solid lightgray;
+    border-radius: 6px;
+}
+
+ul {
+    /* max-height: 50%; */
+    list-style: none;
+    /* overflow-y: auto; */
+}
+
+li {
+    margin-top: 12px;
+}
+
+input {
+    border-radius: 3px;
+    border: 1px solid lightgray;
+    margin-top: 1em;
+    padding: 1em 2em 1em 1em;
+    transition: border 200ms ease;
+}
+
+input:focus {
+    border: 1px solid var(--primary);
+}
+
+button {
+    background-color: var(--primary);
+    border-radius: 3px;
+    border: 1px solid var(--primary);
+    color: white;
+    cursor: pointer;
+    font-family: "Roboto Black";
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 125px;
+    padding: 1em;
+    text-transform: uppercase;
+    transition: background-color 200ms ease, border 200ms ease, color 200ms ease;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+    border: 1px solid var(--primary-hover);
+}
+
+button:active {
+    background-color: var(--primary-active);
+    border: 1px solid var(--primary-active);
+}
+
+.user {
+    background-color: gray;
+    border-radius: 3px;
+    color: white;
+    margin-right: 0.5em;
+    padding: 4px 12px;
+}

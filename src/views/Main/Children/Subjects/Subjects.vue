@@ -72,13 +72,13 @@
                 <!-- User -->
                 <md-table-cell md-sort-by="user_id" md-label="Erstellt von">
                     <div
-                        :class="users.find(user => user.user_id == item.user_id).role"
+                        :class="users.find(user => user.user_id === item.user_id).role"
                         class="role"
                     >
                         {{ getUserRoleLetter(item.user_id) }}
                         <md-tooltip md-delay="600">{{ getUserRole(item.user_id) }}</md-tooltip>
                     </div>
-                    {{ getUser(item.user_id) }}
+                    {{ getUser(item.user_id, "short") }}
                 </md-table-cell>
                 <!-- Date -->
                 <md-table-cell md-sort-by="created_at" md-label="Erstellt am">

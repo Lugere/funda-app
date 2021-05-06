@@ -8,7 +8,7 @@ import Subjects from "../views/Main/Children/Subjects/Subjects.vue";
 import Quizzes from "../views/Main/Children/Quizzes/Quizzes.vue";
 import Users from "../views/Main/Children/Users/Users.vue";
 import store from "@/store";
-import { Store } from "vuex";
+import { Form } from "element-ui";
 
 Vue.use(VueRouter);
 
@@ -28,7 +28,6 @@ const routes: RouteConfig[] = [
     {
         path: "/",
         name: "Main",
-        redirect: "Entries",
         meta: {
             requiresAuth: true,
         },
@@ -46,7 +45,7 @@ const routes: RouteConfig[] = [
                 name: "Entries",
                 component: Entries,
                 meta: {
-                    requiresAuth: true,
+                    requiresAdmin: false,
                     breadcrumb: "Fragen",
                 },
             },
@@ -55,7 +54,7 @@ const routes: RouteConfig[] = [
                 name: "Subjects",
                 component: Subjects,
                 meta: {
-                    requiresAuth: true,
+                    requiresAdmin: false,
                     breadcrumb: "Kategorien",
                 },
             },
@@ -64,7 +63,7 @@ const routes: RouteConfig[] = [
                 name: "Quizzes",
                 component: Quizzes,
                 meta: {
-                    requiresAuth: true,
+                    requiresAdmin: false,
                     breadcrumb: "Lernquiz",
                 },
             },
@@ -72,7 +71,6 @@ const routes: RouteConfig[] = [
                 path: "/Users",
                 name: "Users",
                 meta: {
-                    requiresAuth: true,
                     requiresAdmin: true,
                     breadcrumb: "Benutzer",
                 },
@@ -89,15 +87,24 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    // const isAuthenticated = store.state.currentUser;
-    // if (isAuthenticated && to.path == "/") next("Entries");
-    // if (isAuthenticated && !requiresAuth) next("Entries");
-    // if (!isAuthenticated && requiresAuth) next("Login");
-    // else next();
+    store.dispatch("checkAuthStatus")
+
+    const currentUser: any = store.state.currentUser;
+
+    const isAdmin = currentUser.role === "admin";
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
+
+    // User tries to access an admin-only page
+    if (currentUser && requiresAdmin && !isAdmin) next("Entries");
+    // User is logged in and tries to access page only accessible to logged-out users
+    if (currentUser && !requiresAuth) next("Entries");
+    // User is logged out and tries to acces page only accessible to logged-in users
+    if (!currentUser && requiresAuth) next("Login");
+    // If nothing above was true go to page the user requested
+    else next();
 
     document.title = `FUNDA - Fragen & Antworten | ${to.meta.breadcrumb}`;
-    next();
 });
 
 export default router;
